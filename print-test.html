@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Print Test - Contract</title>
+    <style>
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+
+            * {
+                background: white !important;
+                background-color: white !important;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                width: 210mm;
+            }
+
+            .page {
+                width: 210mm;
+                min-height: auto !important;
+                height: auto !important;
+                padding: 10mm;
+                page-break-after: avoid;
+            }
+
+            .page-2 {
+                page-break-before: always;
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+        }
+
+        .page {
+            border: 1px solid #ccc;
+            margin: 20px auto;
+            padding: 20mm;
+            width: 210mm;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <h1>الصفحة الأولى - المحتوى الرئيسي</h1>
+        <p>هذا مثال للمحتوى في الصفحة الأولى.</p>
+        <table border="1" width="100%">
+            <tr>
+                <td>جدول المواصفات</td>
+            </tr>
+            <tr>
+                <td>سطر 1</td>
+            </tr>
+            <tr>
+                <td>سطر 2</td>
+            </tr>
+        </table>
+        <p>التوقيعات</p>
+    </div>
+
+    <div class="page page-2">
+        <h1>الصفحة الثانية - البنود</h1>
+        <p>بنود التعاقد هنا.</p>
+    </div>
+
+    <script>
+        console.log("إذا طبعت هذا الملف ورأيت أكثر من صفحتين، فالمشكلة من المتصفح نفسه.");
+        console.log("إذا ظهرت صفحتين فقط، فالمشكلة من الـ CSS في ContractPreview.css");
+    </script>
+</body>
+
+</html>

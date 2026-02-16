@@ -1,0 +1,506 @@
+
+> kitchinz-erp@0.0.0 lint
+> eslint .
+
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\App.jsx
+   54:30  error  'Icon' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          no-unused-vars
+   65:67  error  'setIsMobileMenuOpen' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           no-unused-vars
+   66:11  error  'logout' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-unused-vars
+  105:7   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  103 |   useEffect(() => {
+  104 |     if (!globalSearch.trim()) {
+> 105 |       setSearchResults([]);
+      |       ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  106 |       return;
+  107 |     }
+  108 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  react-hooks/set-state-in-effect
+  144:5   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  142 |   // Close search results and user menu on navigation
+  143 |   useEffect(() => {
+> 144 |     setGlobalSearch('');
+      |     ^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  145 |     setIsUserMenuOpen(false);
+  146 |     setIsMobileMenuOpen(false);
+  147 |   }, [location.pathname]);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             react-hooks/set-state-in-effect
+  336:39  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  334 |         <div className="page-container">
+  335 |           <Routes>
+> 336 |             <Route path="/" element={<ProtectedRoute perm={perms.canViewDashboard}><Dashboard /></ProtectedRoute>} />
+      |                                       ^^^^^^^^^^^^^^ This component is created during render
+  337 |             <Route path="/customers" element={<ProtectedRoute perm={perms.canManageCustomers}><Customers /></ProtectedRoute>} />
+  338 |             <Route path="/purchasing" element={<ProtectedRoute perm={perms.canManagePurchases}><Purchasing /></ProtectedRoute>} />
+  339 |             <Route path="/inventory" element={<ProtectedRoute perm={perms.canManageInventory}><Inventory /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                                                                                                                                                                                                                                              react-hooks/static-components
+  337:48  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  335 |           <Routes>
+  336 |             <Route path="/" element={<ProtectedRoute perm={perms.canViewDashboard}><Dashboard /></ProtectedRoute>} />
+> 337 |             <Route path="/customers" element={<ProtectedRoute perm={perms.canManageCustomers}><Customers /></ProtectedRoute>} />
+      |                                                ^^^^^^^^^^^^^^ This component is created during render
+  338 |             <Route path="/purchasing" element={<ProtectedRoute perm={perms.canManagePurchases}><Purchasing /></ProtectedRoute>} />
+  339 |             <Route path="/inventory" element={<ProtectedRoute perm={perms.canManageInventory}><Inventory /></ProtectedRoute>} />
+  340 |             <Route path="/contracts" element={<ProtectedRoute perm={perms.canManageContracts}><Contracts /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                                                                                                                                             react-hooks/static-components
+  338:49  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  336 |             <Route path="/" element={<ProtectedRoute perm={perms.canViewDashboard}><Dashboard /></ProtectedRoute>} />
+  337 |             <Route path="/customers" element={<ProtectedRoute perm={perms.canManageCustomers}><Customers /></ProtectedRoute>} />
+> 338 |             <Route path="/purchasing" element={<ProtectedRoute perm={perms.canManagePurchases}><Purchasing /></ProtectedRoute>} />
+      |                                                 ^^^^^^^^^^^^^^ This component is created during render
+  339 |             <Route path="/inventory" element={<ProtectedRoute perm={perms.canManageInventory}><Inventory /></ProtectedRoute>} />
+  340 |             <Route path="/contracts" element={<ProtectedRoute perm={perms.canManageContracts}><Contracts /></ProtectedRoute>} />
+  341 |             <Route path="/deliveries" element={<ProtectedRoute perm={perms.canManageDeliveries}><Deliveries /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                           react-hooks/static-components
+  339:48  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  337 |             <Route path="/customers" element={<ProtectedRoute perm={perms.canManageCustomers}><Customers /></ProtectedRoute>} />
+  338 |             <Route path="/purchasing" element={<ProtectedRoute perm={perms.canManagePurchases}><Purchasing /></ProtectedRoute>} />
+> 339 |             <Route path="/inventory" element={<ProtectedRoute perm={perms.canManageInventory}><Inventory /></ProtectedRoute>} />
+      |                                                ^^^^^^^^^^^^^^ This component is created during render
+  340 |             <Route path="/contracts" element={<ProtectedRoute perm={perms.canManageContracts}><Contracts /></ProtectedRoute>} />
+  341 |             <Route path="/deliveries" element={<ProtectedRoute perm={perms.canManageDeliveries}><Deliveries /></ProtectedRoute>} />
+  342 |             <Route path="/finance" element={<ProtectedRoute perm={perms.canManageFinance}><Finance /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                       react-hooks/static-components
+  340:48  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  338 |             <Route path="/purchasing" element={<ProtectedRoute perm={perms.canManagePurchases}><Purchasing /></ProtectedRoute>} />
+  339 |             <Route path="/inventory" element={<ProtectedRoute perm={perms.canManageInventory}><Inventory /></ProtectedRoute>} />
+> 340 |             <Route path="/contracts" element={<ProtectedRoute perm={perms.canManageContracts}><Contracts /></ProtectedRoute>} />
+      |                                                ^^^^^^^^^^^^^^ This component is created during render
+  341 |             <Route path="/deliveries" element={<ProtectedRoute perm={perms.canManageDeliveries}><Deliveries /></ProtectedRoute>} />
+  342 |             <Route path="/finance" element={<ProtectedRoute perm={perms.canManageFinance}><Finance /></ProtectedRoute>} />
+  343 |             <Route path="/invoices" element={<ProtectedRoute perm={perms.canManageInvoices}><Invoices /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                          react-hooks/static-components
+  341:49  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  339 |             <Route path="/inventory" element={<ProtectedRoute perm={perms.canManageInventory}><Inventory /></ProtectedRoute>} />
+  340 |             <Route path="/contracts" element={<ProtectedRoute perm={perms.canManageContracts}><Contracts /></ProtectedRoute>} />
+> 341 |             <Route path="/deliveries" element={<ProtectedRoute perm={perms.canManageDeliveries}><Deliveries /></ProtectedRoute>} />
+      |                                                 ^^^^^^^^^^^^^^ This component is created during render
+  342 |             <Route path="/finance" element={<ProtectedRoute perm={perms.canManageFinance}><Finance /></ProtectedRoute>} />
+  343 |             <Route path="/invoices" element={<ProtectedRoute perm={perms.canManageInvoices}><Invoices /></ProtectedRoute>} />
+  344 |             <Route path="/invoice/:id" element={<ProtectedRoute perm={perms.canManageInvoices}><InvoiceDetails /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                     react-hooks/static-components
+  342:46  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  340 |             <Route path="/contracts" element={<ProtectedRoute perm={perms.canManageContracts}><Contracts /></ProtectedRoute>} />
+  341 |             <Route path="/deliveries" element={<ProtectedRoute perm={perms.canManageDeliveries}><Deliveries /></ProtectedRoute>} />
+> 342 |             <Route path="/finance" element={<ProtectedRoute perm={perms.canManageFinance}><Finance /></ProtectedRoute>} />
+      |                                              ^^^^^^^^^^^^^^ This component is created during render
+  343 |             <Route path="/invoices" element={<ProtectedRoute perm={perms.canManageInvoices}><Invoices /></ProtectedRoute>} />
+  344 |             <Route path="/invoice/:id" element={<ProtectedRoute perm={perms.canManageInvoices}><InvoiceDetails /></ProtectedRoute>} />
+  345 |             <Route path="/inspections" element={<ProtectedRoute perm={perms.canManageInspections}><Inspections /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                  react-hooks/static-components
+  343:47  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  341 |             <Route path="/deliveries" element={<ProtectedRoute perm={perms.canManageDeliveries}><Deliveries /></ProtectedRoute>} />
+  342 |             <Route path="/finance" element={<ProtectedRoute perm={perms.canManageFinance}><Finance /></ProtectedRoute>} />
+> 343 |             <Route path="/invoices" element={<ProtectedRoute perm={perms.canManageInvoices}><Invoices /></ProtectedRoute>} />
+      |                                               ^^^^^^^^^^^^^^ This component is created during render
+  344 |             <Route path="/invoice/:id" element={<ProtectedRoute perm={perms.canManageInvoices}><InvoiceDetails /></ProtectedRoute>} />
+  345 |             <Route path="/inspections" element={<ProtectedRoute perm={perms.canManageInspections}><Inspections /></ProtectedRoute>} />
+  346 |             <Route path="/inspection/:id" element={<ProtectedRoute perm={perms.canManageInspections}><InspectionDetails /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">  react-hooks/static-components
+  344:50  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  342 |             <Route path="/finance" element={<ProtectedRoute perm={perms.canManageFinance}><Finance /></ProtectedRoute>} />
+  343 |             <Route path="/invoices" element={<ProtectedRoute perm={perms.canManageInvoices}><Invoices /></ProtectedRoute>} />
+> 344 |             <Route path="/invoice/:id" element={<ProtectedRoute perm={perms.canManageInvoices}><InvoiceDetails /></ProtectedRoute>} />
+      |                                                  ^^^^^^^^^^^^^^ This component is created during render
+  345 |             <Route path="/inspections" element={<ProtectedRoute perm={perms.canManageInspections}><Inspections /></ProtectedRoute>} />
+  346 |             <Route path="/inspection/:id" element={<ProtectedRoute perm={perms.canManageInspections}><InspectionDetails /></ProtectedRoute>} />
+  347 |             <Route path="/employees" element={<ProtectedRoute perm={perms.canManageHR}><Employees /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">         react-hooks/static-components
+  345:50  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  343 |             <Route path="/invoices" element={<ProtectedRoute perm={perms.canManageInvoices}><Invoices /></ProtectedRoute>} />
+  344 |             <Route path="/invoice/:id" element={<ProtectedRoute perm={perms.canManageInvoices}><InvoiceDetails /></ProtectedRoute>} />
+> 345 |             <Route path="/inspections" element={<ProtectedRoute perm={perms.canManageInspections}><Inspections /></ProtectedRoute>} />
+      |                                                  ^^^^^^^^^^^^^^ This component is created during render
+  346 |             <Route path="/inspection/:id" element={<ProtectedRoute perm={perms.canManageInspections}><InspectionDetails /></ProtectedRoute>} />
+  347 |             <Route path="/employees" element={<ProtectedRoute perm={perms.canManageHR}><Employees /></ProtectedRoute>} />
+  348 |             <Route path="/profile" element={<UserProfile />} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                                                                    react-hooks/static-components
+  346:53  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  344 |             <Route path="/invoice/:id" element={<ProtectedRoute perm={perms.canManageInvoices}><InvoiceDetails /></ProtectedRoute>} />
+  345 |             <Route path="/inspections" element={<ProtectedRoute perm={perms.canManageInspections}><Inspections /></ProtectedRoute>} />
+> 346 |             <Route path="/inspection/:id" element={<ProtectedRoute perm={perms.canManageInspections}><InspectionDetails /></ProtectedRoute>} />
+      |                                                     ^^^^^^^^^^^^^^ This component is created during render
+  347 |             <Route path="/employees" element={<ProtectedRoute perm={perms.canManageHR}><Employees /></ProtectedRoute>} />
+  348 |             <Route path="/profile" element={<UserProfile />} />
+  349 |             <Route path="/settings" element={<ProtectedRoute perm={perms.canManageUsers}><SettingsScreen /></ProtectedRoute>} />
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                                                              react-hooks/static-components
+  347:48  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  345 |             <Route path="/inspections" element={<ProtectedRoute perm={perms.canManageInspections}><Inspections /></ProtectedRoute>} />
+  346 |             <Route path="/inspection/:id" element={<ProtectedRoute perm={perms.canManageInspections}><InspectionDetails /></ProtectedRoute>} />
+> 347 |             <Route path="/employees" element={<ProtectedRoute perm={perms.canManageHR}><Employees /></ProtectedRoute>} />
+      |                                                ^^^^^^^^^^^^^^ This component is created during render
+  348 |             <Route path="/profile" element={<UserProfile />} />
+  349 |             <Route path="/settings" element={<ProtectedRoute perm={perms.canManageUsers}><SettingsScreen /></ProtectedRoute>} />
+  350 |           </Routes>
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                                                                                                                                                                                      react-hooks/static-components
+  349:47  error  Error: Cannot create components during render
+
+Components created during render will reset their state each time they are created. Declare components outside of render.
+
+  347 |             <Route path="/employees" element={<ProtectedRoute perm={perms.canManageHR}><Employees /></ProtectedRoute>} />
+  348 |             <Route path="/profile" element={<UserProfile />} />
+> 349 |             <Route path="/settings" element={<ProtectedRoute perm={perms.canManageUsers}><SettingsScreen /></ProtectedRoute>} />
+      |                                               ^^^^^^^^^^^^^^ This component is created during render
+  350 |           </Routes>
+  351 |         </div>
+  352 |       </main>
+
+  176 |   const perms = currentUser.permissions || {};
+  177 |
+> 178 |   const ProtectedRoute = ({ children, perm }) => {
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 179 |     if (perm !== undefined && !perm) {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 180 |       return (
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 187 |     return children;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 188 |   };
+      | ^^^^ The component is created during render here
+  189 |
+  190 |   return (
+  191 |     <div className={`app-container ${isMobileMenuOpen ? 'mobile-menu-active' : ''}`} dir="rtl">                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/static-components
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\components\ContractForm.jsx
+  104:9   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  102 |         const totalValue = woodSum + accSum;
+  103 |
+> 104 |         setFormData(prev => ({
+      |         ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  105 |             ...prev,
+  106 |             woodTotal: woodSum.toString(),
+  107 |             accessoriesTotal: accSum.toString(),  react-hooks/set-state-in-effect
+  147:11  error  'handleSubmit' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    no-unused-vars
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\components\ContractPreview.jsx
+  264:30  error  'data' is assigned a value but never used  no-unused-vars
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\context\AppContext.jsx
+   131:12  error    'isCloudLoading' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                    no-unused-vars
+   206:8   warning  React Hook useEffect has missing dependencies: 'accounts', 'contractOptions', 'contracts', 'customers', 'employees', 'inspections', 'inventory', 'invoices', 'purchases', 'recurringExpenses', 'systemSettings', 'transactions', and 'users'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+   943:8   warning  React Hook useEffect has a missing dependency: 'adminPermissions'. Either include it or remove the dependency array                                                                                                                                                                               react-hooks/exhaustive-deps
+  1025:14  error    Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                    react-refresh/only-export-components
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\screens\Contracts.jsx
+  35:17  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  33 |             const customer = customers.find(c => c.name === location.state.selectedCustomerName);
+  34 |             if (customer) {
+> 35 |                 setActiveContract({ customer });
+     |                 ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  36 |                 setIsEditing(false);
+  37 |                 setShowForm(true);
+  38 |             }  react-hooks/set-state-in-effect
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\screens\Customers.jsx
+   38:9   error  'updateInspection' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        no-unused-vars
+   39:9   error  'deleteInspection' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        no-unused-vars
+  469:63  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  467 |                                     <div className="history-list-modern">
+  468 |                                         {customerContracts.map(c => (
+> 469 |                                             <div key={c.id || Math.random()} className="history-item-modern">
+      |                                                               ^^^^^^^^^^^^^ Cannot call impure function
+  470 |                                                 <div className="item-main">
+  471 |                                                     <FileText size={18} className="text-primary" />
+  472 |                                                     <div>                                               react-hooks/purity
+  489:63  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  487 |                                     <div className="history-list-modern">
+  488 |                                         {customerPurchases.map(p => (
+> 489 |                                             <div key={p.id || Math.random()} className="history-item-modern">
+      |                                                               ^^^^^^^^^^^^^ Cannot call impure function
+  490 |                                                 <div className="item-main">
+  491 |                                                     <Package size={18} className="text-secondary" />
+  492 |                                                     <div>                                              react-hooks/purity
+  509:63  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  507 |                                     <div className="history-list-modern">
+  508 |                                         {customerTransactions.map(t => (
+> 509 |                                             <div key={t.id || Math.random()} className="history-item-modern">
+      |                                                               ^^^^^^^^^^^^^ Cannot call impure function
+  510 |                                                 <div className="item-main">
+  511 |                                                     <DollarSign size={18} className={t.type === 'income' ? 'text-success' : 'text-danger'} />
+  512 |                                                     <div>  react-hooks/purity
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\screens\Dashboard.jsx
+  40:41  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+  38 |             type: 'contract',
+  39 |             name: c.customer?.name,
+> 40 |             date: new Date(c.savedAt || Date.now()),
+     |                                         ^^^^^^^^^^ Cannot call impure function
+  41 |             detail: c.projectType
+  42 |         })),
+  43 |         ...purchases.map(p => ({  react-hooks/purity
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\screens\InspectionDetails.jsx
+  23:26  error  'systemSettings' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\mohamed.fattouh\.gemini\antigravity\scratch\kitchinz-erp\src\screens\Invoices.jsx
+  25:38  error  'customers' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+✖ 34 problems (32 errors, 2 warnings)
+

@@ -1,0 +1,807 @@
+@import url('https://fonts.googleapis.com/css?family=Droid+Arabic+Kufi:400,700');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700;900&display=swap');
+
+:root {
+    --logo-green: #FA9A21;
+    --canva-green: #FFD580;
+    --light-green: #FFC04D;
+    --bg-green: #FFF8EE;
+    --sidebar-black: #1A1A1A;
+}
+
+.contract-paper-container {
+    background: #f0f2f5;
+    padding: 40px 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    direction: rtl;
+    font-family: 'Droid Arabic Kufi', serif;
+    position: relative;
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    color: #000;
+}
+
+.contract-page {
+    width: 210mm;
+    min-height: 297mm;
+    height: auto;
+    background: #fff;
+    margin: auto;
+    display: flex;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: visible;
+}
+
+/* Sidebar Styling - Now on the left in RTL */
+.contract-sidebar {
+    width: 60px;
+    height: 70mm;
+    /* Only as tall as the logo/branding */
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+    position: absolute;
+    left: 5mm;
+    top: 0;
+    overflow: hidden;
+}
+
+/* Sidebar Branding Image style */
+.sidebar-branding-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media print {
+    .sidebar-branding-img {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    .contract-sidebar {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        left: 5mm !important;
+        top: 0 !important;
+        position: absolute !important;
+        width: 60px !important;
+        height: 70mm !important;
+    }
+
+    .contract-watermark {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        color: rgba(250, 154, 33, 0.05) !important;
+        /* Slightly darker for print visibility */
+    }
+}
+
+/* Main Content Area */
+.contract-main-content {
+    flex: 1;
+    padding: 0 15mm 30px 15mm;
+    /* Reverted to 15mm safety margins */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 297mm;
+    /* Restored for signature grounding */
+    z-index: 1;
+}
+
+.contract-content-body {
+    flex: 1;
+    width: 100%;
+}
+
+.signatures-wrapper {
+    width: 100%;
+    margin-top: 30mm;
+    page-break-inside: avoid;
+}
+
+.contract-header-section,
+.specs-title {
+    padding-left: 70px;
+    /* Skip the sidebar only at the top */
+}
+
+.contract-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1100px;
+    font-weight: 900;
+    color: rgba(250, 154, 33, 0.03);
+    pointer-events: none;
+    user-select: none;
+    z-index: -1;
+}
+
+/* Header Sections */
+.contract-header-center {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.title-green-box {
+    background: var(--light-green);
+    font-size: 38px;
+    font-weight: 950;
+    padding: 0 60px 5px 60px;
+    /* No top padding */
+    border-radius: 0 0 12px 12px;
+    display: inline-flex;
+    align-items: flex-end;
+    height: 60px;
+    line-height: 1;
+}
+
+.header-info-lines {
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.intro-row {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.intro-row.flex-between {
+    justify-content: space-between;
+}
+
+.p-text {
+    padding: 0 8px;
+    min-width: unset;
+    display: inline-block;
+    font-weight: 800;
+    color: #000;
+}
+
+.p-text-long {
+    padding: 0 8px;
+    min-width: unset;
+    display: inline-block;
+    font-weight: 800;
+    color: #000;
+}
+
+.specs-title {
+    text-align: center;
+    font-weight: 900;
+    margin: 8px 0;
+    font-size: 18px;
+}
+
+/* Stable Table Structure with Side Labels */
+.table-wrapper-with-label {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.table-side-label {
+    width: 38px;
+    background: var(--light-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-left: none;
+    /* Align with table */
+}
+
+.side-label-text {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-weight: 900;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.contract-table {
+    flex: 1;
+    border-collapse: collapse;
+    border: 1.5px solid #000;
+}
+
+.contract-table th,
+.contract-table td {
+    border: 1.1px solid #000;
+    height: 28px;
+    padding: 0 8px;
+    text-align: center;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.contract-table th {
+    background: #fff;
+    font-weight: 800;
+}
+
+.total-row-highlight td {
+    font-weight: 900;
+    background: #fff;
+    height: 35px;
+    font-size: 14px;
+}
+
+/* Footer Pricing Area */
+.footer-pricing-area {
+    margin-top: 8px;
+    width: 100%;
+}
+
+.grand-total-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-bottom: 12px;
+    padding: 8px 0;
+}
+
+.total-label-text {
+    font-weight: 900;
+    font-size: 16px;
+    color: #000;
+}
+
+.total-amount-tag {
+    background: var(--light-green);
+    color: #000;
+    padding: 4px 15px;
+    border-radius: 8px;
+    font-weight: 950;
+    font-size: 20px;
+    font-family: 'Noto Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+}
+
+.total-words {
+    font-weight: 700;
+    font-size: 14px;
+    color: #444;
+}
+
+.payment-tab-header {
+    background: var(--light-green);
+    color: #000;
+    width: fit-content;
+    padding: 3px 25px;
+    font-weight: 950;
+    border: none;
+    margin-bottom: 2px;
+}
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1.1px solid #000;
+}
+
+.payment-table td {
+    border: 1.1px solid #000;
+    height: 35px;
+    text-align: center;
+    font-weight: 900;
+    font-size: 14px;
+}
+
+.terms-line {
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    margin: 2px 0 12px 0;
+    line-height: 1.6;
+}
+
+/* Second Page (Terms) Styles */
+.contract-paper-container.multidimensional {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.terms-page-content {
+    padding-top: 20px;
+}
+
+.terms-list-container {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    /* Increased for even better readability */
+}
+
+.term-item {
+    display: flex;
+    gap: 8px;
+    font-size: 13.5px;
+    line-height: 2.1;
+    /* Further increased as requested */
+    text-align: justify;
+}
+
+.term-label {
+    font-weight: 950;
+    color: #000;
+    white-space: nowrap;
+}
+
+.term-text {
+    font-weight: 400;
+    color: #111;
+}
+
+.title-green-box.rectangular {
+    border-radius: 0;
+}
+
+/* Page 2 Bordered Layout */
+.second-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15mm 10mm;
+    /* Restored horizontal space */
+}
+
+.terms-border-wrapper {
+    width: 100%;
+    border: 1.5px solid #FA9A21;
+    border-radius: 25px;
+    position: relative;
+    padding: 40px 30px 10px 30px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    flex: none !important;
+    /* Force it to wrap content */
+    min-height: initial;
+}
+
+.terms-border-header {
+    position: absolute;
+    top: -22.5px;
+    /* Half of height */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    /* This creates the gap on the line */
+    padding: 0 10px;
+    /* The gap distance on each side */
+    z-index: 5;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.terms-header-text {
+    background: var(--canva-green);
+    padding: 0 40px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 34px;
+    font-weight: 950;
+    color: #000;
+    white-space: nowrap;
+}
+
+.terms-page-content {
+    flex: none;
+    /* Do not stretch inside the border */
+    padding: 0 !important;
+    min-height: auto !important;
+    /* Force it to NOT fill the page height */
+}
+
+/* ============================================================
+   7. PRINT OPTIMIZATION (A4)
+   ============================================================ */
+@page {
+    size: A4;
+    margin: 0 !important;
+}
+
+@media print {
+
+    /* RADICAL RESET: Disable ALL browser-injected or app-level offsets */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+
+    .page-wrapper {
+        margin: 0;
+    }
+
+    .page-a4 {
+        width: 210mm;
+        height: 297mm;
+        box-shadow: none;
+        page-break-after: always;
+    }
+
+    .sidebar,
+    .right-panel,
+    .app-shell {
+        display: none !important;
+    }
+
+    /* CRITICAL: Force white backgrounds everywhere to override dark mode */
+    *,
+    *::before,
+    *::after {
+        background-color: white !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* SPECIFIC BRAND EXCEPTIONS: These MUST keep their colors */
+    .title-green-box,
+    .table-side-label,
+    .total-amount-tag,
+    .payment-tab-header,
+    .total-row-highlight td,
+    .terms-header-text,
+    .canva-sig-box,
+    .side-label-text {
+        background-color: var(--light-green) !important;
+        background: var(--light-green) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .side-label-text {
+        background: transparent !important;
+        background-color: transparent !important;
+        color: #000 !important;
+    }
+
+    .canva-sig-box {
+        background-color: #EBFCF1 !important;
+        background: #EBFCF1 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .title-green-box *,
+    .table-side-label *,
+    .canva-sig-box *,
+    .total-row-highlight td * {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+
+    .sidebar-branding-img,
+    .contract-sidebar {
+        background: transparent !important;
+        background-color: transparent !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+
+    /* Hide EVERYTHING except the contract container */
+    body>*:not(#root),
+    #root>*:not(.app-container),
+    .app-sidebar,
+    .top-search-bar,
+    .preview-actions,
+    .main-header,
+    .no-print {
+        display: none !important;
+    }
+
+    /* Clear all parent container constraints */
+    .app-container,
+    .content,
+    .page-container,
+    .preview-page,
+    .contract-details-page {
+        padding: 0 !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        position: static !important;
+        width: 100% !important;
+        min-height: 100% !important;
+        height: auto !important;
+    }
+
+    .contract-paper-container {
+        display: block !important;
+        width: 210mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        position: static !important;
+        direction: rtl !important;
+    }
+
+    .contract-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        /* STRICT A4 */
+        min-height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white !important;
+        display: flex !important;
+        flex-direction: row !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    /* Force Page 2 and Page 3 to start fresh */
+    .contract-page+.contract-page {
+        page-break-before: always !important;
+        break-before: page !important;
+    }
+
+    .second-page {
+        flex-direction: column !important;
+        page-break-before: always !important;
+        break-before: page !important;
+        border: none !important;
+        padding: 10mm 4mm !important;
+        height: 297mm !important;
+        /* MATCH A4 FOR GROUNDING */
+        min-height: 297mm !important;
+        display: flex !important;
+    }
+
+    .contract-sidebar {
+        display: block !important;
+        width: 60px !important;
+        height: 70mm !important;
+        position: absolute !important;
+        left: 5mm !important;
+        top: 0 !important;
+        z-index: 50 !important;
+    }
+
+    .page-2-pricing .contract-sidebar {
+        display: none !important;
+    }
+
+    .sidebar-branding-img {
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important;
+        object-fit: contain !important;
+    }
+
+    .contract-main-content {
+        flex: 1 !important;
+        height: 100% !important;
+        /* FILL THE PAGE */
+        padding: 0 15mm 5mm 15mm !important;
+        /* Slightly reduced bottom padding to fit cost */
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+        position: relative !important;
+    }
+
+    .contract-content-body {
+        width: 100% !important;
+        flex: 1 !important;
+        /* ALLOW THIS TO PUSH SIGNATURES DOWN */
+    }
+
+    .contract-header-section,
+    .specs-title {
+        padding-left: 70px !important;
+        margin-bottom: 8px !important;
+        font-size: 18px !important;
+    }
+
+    /* Professional, readable font sizes */
+    .header-info-lines,
+    .intro-row {
+        font-size: 14px !important;
+        line-height: 1.8 !important;
+    }
+
+    .contract-table,
+    .payment-table,
+    .contract-table td,
+    .contract-table th,
+    .payment-table td,
+    .payment-table th {
+        font-size: 13px !important;
+        /* Slightly smaller for better fit */
+        line-height: 1.4 !important;
+        padding: 5px 8px !important;
+    }
+
+    .contract-table th {
+        background: #f8f8f8 !important;
+        /* light grey for th in print */
+    }
+
+    .table-wrapper-with-label {
+        margin-bottom: 12px !important;
+    }
+
+    .title-green-box {
+        font-size: 38px !important;
+        padding: 0 60px 5px 60px !important;
+        margin-bottom: 15px !important;
+        height: 60px !important;
+    }
+
+    .terms-page-content {
+        min-height: auto !important;
+        padding-top: 10px !important;
+        /* Compact print spacing */
+    }
+
+    .terms-list-container {
+        padding: 5px 0 !important;
+        gap: 8px !important;
+        /* Further increased for print readability */
+        /* Compact print gap */
+    }
+
+    .terms-border-wrapper {
+        padding: 25px 20px 5px 20px !important;
+        /* Compact print padding */
+    }
+
+    .signatures-wrapper {
+        position: relative !important;
+        width: 100% !important;
+        margin-top: auto !important;
+        /* GROUND SIGNATURES AT BOTTOM VIA FLEX */
+        padding-bottom: 10mm !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        z-index: 1 !important;
+    }
+
+    /* Extra insurance: Push from top if pricing area is small */
+    .pricing-and-payment-wrapper {
+        flex-shrink: 0 !important;
+        page-break-inside: avoid !important;
+    }
+
+    .footer-pricing-area {
+        page-break-inside: avoid !important;
+        margin-bottom: 0 !important;
+    }
+
+    .table-wrapper-with-label,
+    .contract-table,
+    .payment-table {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    .grand-total-section,
+    .payment-tab-header {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* Prevent all major sections from breaking across pages */
+    .header-info-lines,
+    .contract-intro,
+    .specifications-section,
+    .pricing-and-payment-wrapper,
+    .signatures-wrapper {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+
+    /* Reduce margins to fit more content */
+    .contract-header-section {
+        margin-bottom: 5mm !important;
+    }
+
+    .table-wrapper-with-label {
+        margin-bottom: 3mm !important;
+    }
+
+    /* Visual Fixes */
+    .title-green-box,
+    .payment-tab-header,
+    .table-side-label,
+    .terms-header-text {
+        background-color: var(--light-green) !important;
+    }
+
+    .canva-sig-box {
+        background-color: #EBFCF1 !important;
+    }
+
+    .contract-watermark {
+        opacity: 0.1 !important;
+    }
+}
+
+/* Signatures */
+.signatures-area {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding-bottom: 0;
+}
+
+.sig-box-wrapper {
+    flex: 1;
+    text-align: center;
+}
+
+.canva-sig-box {
+    height: 80px;
+    background: #EBFCF1;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    box-shadow: none;
+}
+
+.sig-title {
+    font-weight: 950;
+    font-size: 14px;
+    color: #000;
+    width: 100%;
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* Editable Indicators - Minimalist for formal look */
+[contenteditable="true"] {
+    outline: none;
+}
+
+[contenteditable="true"]:hover {
+    cursor: text;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+[contenteditable="true"]:focus {
+    background: transparent;
+}
+
+/* Floating Print Button - Removed */
