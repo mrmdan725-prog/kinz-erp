@@ -186,16 +186,22 @@ const Inventory = () => {
                     </div>
                 </div>
                 <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                    <button className="btn-export-excel glass-interactive" onClick={handleExport}>
-                        <FileSpreadsheet size={16} />
-                        تصدير الجرد
+                    <button className="btn-premium" onClick={handleExport} style={{ border: '1px solid rgba(46, 204, 113, 0.2)' }}>
+                        <div className="icon-wrapper-premium" style={{ background: 'rgba(46, 204, 113, 0.15)', color: '#2ecc71' }}>
+                            <FileSpreadsheet size={20} />
+                        </div>
+                        <div className="content-premium">
+                            <span className="title-premium">تصدير الجرد</span>
+                            <span className="subtitle-premium">قائمة المواد (Excel)</span>
+                        </div>
                     </button>
-                    <button className="btn-premium btn-premium-success" onClick={() => handleOpenModal('add')}>
+                    <button className="btn-premium btn-premium-primary" onClick={() => handleOpenModal('add')}>
                         <div className="icon-wrapper-premium">
-                            <Plus size={18} />
+                            <Plus size={20} />
                         </div>
                         <div className="content-premium">
                             <span className="title-premium">إضافة مادة جديدة</span>
+                            <span className="subtitle-premium">تسجيل عهدة ورشة جديدة</span>
                         </div>
                     </button>
                 </div>

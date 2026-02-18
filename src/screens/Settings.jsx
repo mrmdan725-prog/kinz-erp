@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 const SettingsScreen = () => {
-    const { users, addUser, updateUser, deleteUser, systemSettings, updateSettings, defaultPermissions, currentUser, contractOptions, updateContractOptions, serviceItems, setServiceItems } = useApp();
+    const { users, addUser, updateUser, deleteUser, systemSettings, updateSettings, defaultPermissions, currentUser, contractOptions, updateContractOptions, serviceItems, setServiceItems, factoryReset } = useApp();
     const [activeTab, setActiveTab] = useState('system'); // 'system', 'users', 'contract-terms', 'services'
     const [showUserModal, setShowUserModal] = useState(false);
     const [newServiceItem, setNewServiceItem] = useState({ name: '', defaultPrice: '' }); // State for new service item
@@ -204,6 +204,24 @@ const SettingsScreen = () => {
                                     حفظ التغييرات
                                 </button>
                             </form>
+
+                            {/* Danger Zone */}
+                            <div className="danger-zone" style={{ marginTop: '60px', paddingTop: '30px', borderTop: '1px solid rgba(255, 77, 77, 0.2)' }}>
+                                <h4 style={{ color: '#ff4d4d', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                                    <Trash2 size={18} />
+                                    منطقة الخطر (إعادة ضبط المصنع)
+                                </h4>
+                                <p className="text-secondary" style={{ fontSize: '13px', marginBottom: '20px' }}>
+                                    سيؤدي هذا الإجراء إلى مسح كافة البيانات (عملاء، مشتريات، حسابات، سجلات) نهائياً من السحابة ومن هذا الجهاز. لا يمكن التراجع عن هذا الإجراء.
+                                </p>
+                                <button
+                                    className="btn-primary"
+                                    style={{ background: 'transparent', border: '1px solid #ff4d4d', color: '#ff4d4d' }}
+                                    onClick={factoryReset}
+                                >
+                                    مسح كافة البيانات والبدء من جديد
+                                </button>
+                            </div>
                         </div>
                     ) : activeTab === 'users' ? (
                         <div className="settings-panel fade-in">
@@ -607,7 +625,7 @@ const SettingsScreen = () => {
                 }
             `}</style>
             </div >
-        </div>
+        </div >
     );
 };
 

@@ -9,8 +9,9 @@
   --primary-rgb: 250, 154, 33;
   --primary-glow: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.4);
 
-  --bg-main: #0a0a0b;
-  --bg-surface: rgba(23, 23, 25, 0.7);
+  --bg-main: #161d2f;
+  /* Slightly lighter Premium Navy */
+  --bg-surface: rgba(22, 29, 47, 0.7);
   --bg-glass: rgba(255, 255, 255, 0.03);
 
   --text-primary: #f8f9fa;

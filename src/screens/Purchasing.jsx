@@ -22,6 +22,7 @@ const Purchasing = () => {
     const [editId, setEditId] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [viewMode, setViewMode] = useState('list'); // 'grid' or 'list'
+    const [selectedGroupSerial, setSelectedGroupSerial] = useState(null);
     const [formData, setFormData] = useState({
         date: new Date().toISOString().split('T')[0],
         materialName: '',
@@ -123,9 +124,21 @@ const Purchasing = () => {
             p.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (p.supplier && p.supplier.toLowerCase().includes(searchTerm.toLowerCase()));
 
-        // Filter: Show all purchases, searchable
         return matchesSearch;
     });
+
+    const groupedPurchases = Object.entries(
+        filteredPurchases.reduce((groups, item) => {
+            const key = item.serialNumber || item.id;
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(item);
+            return groups;
+        }, {})
+    ).sort((a, b) => new Date(b[1][0].date) - new Date(a[1][0].date));
+
+    const currentGroupItems = selectedGroupSerial
+        ? purchases.filter(p => (p.serialNumber || p.id) === selectedGroupSerial)
+        : [];
 
     const handleExport = () => {
         const dataToExport = filteredPurchases.map(formatters.purchase);
@@ -139,14 +152,24 @@ const Purchasing = () => {
                     <ShoppingCart size={24} className="text-primary" />
                     <h2>مشتريات المواد</h2>
                 </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                    <button className="btn-export-excel" onClick={handleExport} title="تصدير لإكسل">
-                        <FileSpreadsheet size={18} />
-                        تصدير البيانات
+                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+                    <button className="btn-premium" onClick={handleExport} style={{ border: '1px solid rgba(46, 204, 113, 0.2)' }}>
+                        <div className="icon-wrapper-premium" style={{ background: 'rgba(46, 204, 113, 0.15)', color: '#2ecc71' }}>
+                            <FileSpreadsheet size={20} />
+                        </div>
+                        <div className="content-premium">
+                            <span className="title-premium">تصدير البيانات</span>
+                            <span className="subtitle-premium">سجل المشتريات (Excel)</span>
+                        </div>
                     </button>
-                    <button className="btn-primary" onClick={() => setShowModal(true)}>
-                        <Plus size={18} />
-                        تسجيل شراء
+                    <button className="btn-premium btn-premium-primary" onClick={() => setShowModal(true)}>
+                        <div className="icon-wrapper-premium">
+                            <Plus size={20} />
+                        </div>
+                        <div className="content-premium">
+                            <span className="title-premium">تسجيل شراء</span>
+                            <span className="subtitle-premium">إضافة فاتورة مواد جديدة</span>
+                        </div>
                     </button>
                 </div>
             </div>
@@ -177,13 +200,6 @@ const Purchasing = () => {
                         <span className="stat-value">{purchases.length}</span>
                     </div>
                 </div>
-                <div className="stat-card glass">
-                    <Package className="text-primary" />
-                    <div className="stat-info">
-                        <span className="stat-label">المواد النشطة</span>
-                        <span className="stat-value">{inventory.length}</span>
-                    </div>
-                </div>
             </div>
 
             {viewMode === 'list' ? (
@@ -202,41 +218,77 @@ const Purchasing = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredPurchases.map(purchase => (
-                                <tr key={purchase.id}>
-                                    <td>{new Date(purchase.date).toLocaleDateString()}</td>
-                                    <td>{purchase.materialName}</td>
-                                    <td>{purchase.quantity} <small className="text-secondary">{purchase.unit}</small></td>
-                                    <td>{purchase.unitPrice} ج.م</td>
-                                    <td>
-                                        <div className="cell-flex">
-                                            <User size={14} className="text-primary" />
-                                            {purchase.customerName || '---'}
-                                        </div>
-                                    </td>
-                                    <td>{purchase.supplier}</td>
-                                    <td className="text-primary font-bold">
-                                        {(Number(purchase.quantity) * Number(purchase.unitPrice)).toLocaleString()} ج.م
-                                    </td>
-                                    <td>
-                                        <div className="table-actions">
-                                            {purchase.invoiceFile && (
-                                                <button className="btn-icon-action view-btn" title="عرض الفاتورة المرفقة" onClick={() => viewInvoice(purchase.invoiceFile)}>
-                                                    <FileText size={16} />
-                                                </button>
-                                            )}
+                            {groupedPurchases.map(([key, items]) => {
+                                const firstItem = items[0];
+                                const isGroup = items.length > 1 || (firstItem.serialNumber && firstItem.serialNumber.startsWith('PO-'));
+                                const totalAmount = items.reduce((sum, item) => sum + (Number(item.quantity) * Number(item.unitPrice)), 0);
 
-                                            <button className="btn-icon-action" onClick={() => handleEdit(purchase)} title="تعديل">
-                                                <Edit size={16} />
-                                            </button>
-                                            <button className="btn-icon-action delete-btn" onClick={() => handleDelete(purchase.id)} title="حذف">
-                                                <Trash2 size={16} />
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                            {filteredPurchases.length === 0 && (
+                                return (
+                                    <tr
+                                        key={key}
+                                        onDoubleClick={() => setSelectedGroupSerial(key)}
+                                        style={{ cursor: 'pointer' }}
+                                        title="اضغط مرتين للتفاصيل"
+                                    >
+                                        <td>{new Date(firstItem.date).toLocaleDateString()}</td>
+                                        <td>
+                                            {isGroup ? (
+                                                <div style={{ fontWeight: '600', color: 'var(--primary)' }}>
+                                                    طلب توريد ({items.length} بنود)
+                                                </div>
+                                            ) : (
+                                                firstItem.materialName
+                                            )}
+                                        </td>
+                                        <td>
+                                            {isGroup ? '---' : `${firstItem.quantity} `}
+                                            <small className="text-secondary">{isGroup ? '' : firstItem.unit}</small>
+                                        </td>
+                                        <td>{isGroup ? '---' : `${firstItem.unitPrice} ج.م`}</td>
+                                        <td>
+                                            <div className="cell-flex">
+                                                <User size={14} className="text-primary" />
+                                                {firstItem.customerName || '---'}
+                                            </div>
+                                        </td>
+                                        <td>{firstItem.supplier || '---'}</td>
+                                        <td className="text-primary font-bold">
+                                            {totalAmount.toLocaleString()} ج.م
+                                        </td>
+                                        <td>
+                                            <div className="table-actions">
+                                                <button className="btn-icon-action" onClick={() => setSelectedGroupSerial(key)} title="التفاصيل">
+                                                    <LayoutGrid size={16} />
+                                                </button>
+                                                {items.length === 1 && (
+                                                    <>
+                                                        <button className="btn-icon-action" onClick={() => handleEdit(firstItem)} title="تعديل">
+                                                            <Edit size={16} />
+                                                        </button>
+                                                        <button className="btn-icon-action delete-btn" onClick={() => handleDelete(firstItem.id)} title="حذف">
+                                                            <Trash2 size={16} />
+                                                        </button>
+                                                    </>
+                                                )}
+                                                {items.length > 1 && (
+                                                    <button
+                                                        className="btn-icon-action delete-btn"
+                                                        onClick={() => {
+                                                            if (window.confirm(`⚠️ حذف هذا الطلب سيؤدي لحذف جميع بنوده (${items.length} بند).\nهل أنت متأكد؟`)) {
+                                                                items.forEach(item => deletePurchase(item.id));
+                                                            }
+                                                        }}
+                                                        title="حذف الكل"
+                                                    >
+                                                        <Trash2 size={16} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                            {groupedPurchases.length === 0 && (
                                 <tr>
                                     <td colSpan="8" className="text-center">لا توجد عمليات شراء مسجلة تطابق البحث.</td>
                                 </tr>
@@ -246,44 +298,128 @@ const Purchasing = () => {
                 </div>
             ) : (
                 <div className="grid">
-                    {filteredPurchases.length === 0 ? (
+                    {groupedPurchases.length === 0 ? (
                         <div className="card glass text-center" style={{ gridColumn: '1 / -1', padding: '60px' }}>
                             <ShoppingCart size={48} className="text-secondary" style={{ margin: '0 auto 16px' }} />
                             <p className="text-secondary">لا توجد عمليات شراء تطابق البحث</p>
                         </div>
                     ) : (
-                        filteredPurchases.map(purchase => (
-                            <div key={purchase.id} className="card glass purchase-card-enhanced">
-                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
-                                    <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>{new Date(purchase.date).toLocaleDateString()}</span>
-                                    <span className="badge" style={{ fontSize: '10px', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)' }}>
-                                        {purchase.supplier || 'بدون مورد'}
-                                    </span>
-                                </div>
-                                <h4 style={{ marginBottom: '5px' }}>{purchase.materialName}</h4>
-                                <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginBottom: '15px' }}>
-                                    {purchase.customerName || '---'} • {purchase.quantity} {purchase.unit}
-                                </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--glass-border)', paddingTop: '15px' }}>
-                                    <span style={{ fontWeight: '700', color: 'var(--primary)' }}>
-                                        {(Number(purchase.quantity) * Number(purchase.unitPrice)).toLocaleString()} ج.م
-                                    </span>
-                                    <div style={{ display: 'flex', gap: '8px' }}>
-                                        {purchase.invoiceFile && (
-                                            <button className="btn-icon-action" onClick={() => viewInvoice(purchase.invoiceFile)} title="عرض الفاتورة"><FileText size={16} /></button>
-                                        )}
-                                        <button className="btn-icon-action" onClick={() => handleEdit(purchase)} title="تعديل"><Edit size={16} /></button>
-                                        <button className="btn-icon-action delete-btn" onClick={() => handleDelete(purchase.id)} title="حذف"><Trash2 size={16} /></button>
+                        groupedPurchases.map(([key, items]) => {
+                            const p = items[0];
+                            const isGroup = items.length > 1;
+                            const totalAmount = items.reduce((sum, item) => sum + (Number(item.quantity) * Number(item.unitPrice)), 0);
+
+                            return (
+                                <div
+                                    key={key}
+                                    className="card glass purchase-card-enhanced"
+                                    onDoubleClick={() => setSelectedGroupSerial(key)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '15px' }}>
+                                        <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>{new Date(p.date).toLocaleDateString()}</span>
+                                        <span className="badge" style={{ fontSize: '10px', background: 'rgba(var(--primary-rgb), 0.1)', color: 'var(--primary)' }}>
+                                            {p.supplier || 'بدون مورد'}
+                                        </span>
+                                    </div>
+                                    <h4 style={{ marginBottom: '5px' }}>
+                                        {isGroup ? `طلب توريد (${items.length} بنود)` : p.materialName}
+                                    </h4>
+                                    <div style={{ fontSize: '12px', color: 'var(--text-dim)', marginBottom: '15px' }}>
+                                        {p.customerName || '---'} {isGroup ? '' : `• ${p.quantity} ${p.unit}`}
+                                    </div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--glass-border)', paddingTop: '15px' }}>
+                                        <span style={{ fontWeight: '700', color: 'var(--primary)' }}>
+                                            {totalAmount.toLocaleString()} ج.م
+                                        </span>
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            <button className="btn-icon-action" onClick={() => setSelectedGroupSerial(key)} title="التفاصيل"><LayoutGrid size={16} /></button>
+                                            {items.length === 1 && (
+                                                <>
+                                                    <button className="btn-icon-action" onClick={() => handleEdit(p)} title="تعديل"><Edit size={16} /></button>
+                                                    <button className="btn-icon-action delete-btn" onClick={() => handleDelete(p.id)} title="حذف"><Trash2 size={16} /></button>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))
+                            );
+                        })
                     )}
                 </div>
             )}
 
+            {selectedGroupSerial && (
+                <div className="modal-overlay" style={{ zIndex: 1100 }}>
+                    <div className="modal glass" style={{ maxWidth: '800px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                            <h3>تفاصيل طلب الشراء: {selectedGroupSerial.startsWith('PO-') ? selectedGroupSerial : 'طلب مجمع'}</h3>
+                            <button className="btn-icon" onClick={() => setSelectedGroupSerial(null)}><X size={20} /></button>
+                        </div>
+
+                        <div style={{ marginBottom: '20px', padding: '15px', background: 'rgba(255,255,255,0.03)', borderRadius: '12px', display: 'flex', gap: '30px' }}>
+                            <div>
+                                <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-dim)' }}>العميل</span>
+                                <span style={{ fontWeight: '600' }}>{currentGroupItems[0]?.customerName}</span>
+                            </div>
+                            <div>
+                                <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-dim)' }}>المورد</span>
+                                <span style={{ fontWeight: '600' }}>{currentGroupItems[0]?.supplier || '---'}</span>
+                            </div>
+                            <div>
+                                <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-dim)' }}>التاريخ</span>
+                                <span style={{ fontWeight: '600' }}>{currentGroupItems[0] ? new Date(currentGroupItems[0].date).toLocaleDateString() : '---'}</span>
+                            </div>
+                            <div style={{ marginRight: 'auto', textAlign: 'left' }}>
+                                <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-dim)' }}>الإجمالي</span>
+                                <span style={{ fontWeight: '800', fontSize: '18px', color: 'var(--primary)' }}>
+                                    {currentGroupItems.reduce((sum, item) => sum + (Number(item.quantity) * Number(item.unitPrice)), 0).toLocaleString()} ج.م
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="table-container" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                            <table className="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>البند / المادة</th>
+                                        <th>الكمية</th>
+                                        <th>سعر الوحدة</th>
+                                        <th>الإجمالي</th>
+                                        <th className="text-center">إجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {currentGroupItems.map(p => (
+                                        <tr key={p.id}>
+                                            <td>{p.materialName}</td>
+                                            <td>{p.quantity} {p.unit}</td>
+                                            <td>{Number(p.unitPrice).toLocaleString()}</td>
+                                            <td style={{ fontWeight: 'bold' }}>{(Number(p.quantity) * Number(p.unitPrice)).toLocaleString()}</td>
+                                            <td>
+                                                <div className="table-actions">
+                                                    {p.invoiceFile && (
+                                                        <button className="btn-icon-action" onClick={() => viewInvoice(p.invoiceFile)} title="عرض الفاتورة"><FileText size={14} /></button>
+                                                    )}
+                                                    <button className="btn-icon-action" onClick={() => handleEdit(p)} title="تعديل"><Edit size={14} /></button>
+                                                    <button className="btn-icon-action delete-btn" onClick={() => handleDelete(p.id)} title="حذف"><Trash2 size={14} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="modal-actions" style={{ marginTop: '20px' }}>
+                            <button className="btn-secondary" onClick={() => setSelectedGroupSerial(null)}>إغلاق</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {showModal && (
-                <div className="modal-overlay">
+                <div className="modal-overlay" style={{ zIndex: 1200 }}>
                     <div className="modal glass">
                         <h3>{isEditing ? 'تعديل عملية شراء' : 'تسجيل عملية شراء جديدة'}</h3>
                         <form onSubmit={handleSubmit}>

@@ -38,7 +38,6 @@ const Finance = () => {
         deleteAccount,
         adjustAccountBalance,
         resetAllAccounts,
-        resetAllCustomerBalances,
         recurringExpenses,
         addRecurring,
         deleteRecurring,
@@ -269,7 +268,7 @@ const Finance = () => {
 
     return (
         <div className="page dashboard-fade-in">
-            <div className="module-header">
+            <div className="page-header">
                 <div className="module-info">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '8px' }}>
                         <div className="legendary-icon-container" style={{ background: 'rgba(255,255,255,0.1)', padding: '10px', borderRadius: '12px' }}>
@@ -320,9 +319,14 @@ const Finance = () => {
                 </div>
 
                 <div className="module-actions" style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <button className="btn-export-excel glass-interactive" onClick={handleExport}>
-                        <FileSpreadsheet size={16} />
-                        تصدير البيانات
+                    <button className="btn-premium" onClick={handleExport} style={{ border: '1px solid rgba(46, 204, 113, 0.2)' }}>
+                        <div className="icon-wrapper-premium" style={{ background: 'rgba(46, 204, 113, 0.15)', color: '#2ecc71' }}>
+                            <FileSpreadsheet size={20} />
+                        </div>
+                        <div className="content-premium">
+                            <span className="title-premium">تصدير البيانات</span>
+                            <span className="subtitle-premium">سجل العمليات (Excel)</span>
+                        </div>
                     </button>
 
                     <button className="btn-premium btn-premium-primary" onClick={() => { setAddModalTab('customer'); setShowAddModal(true); }}>
@@ -331,7 +335,7 @@ const Finance = () => {
                         </div>
                         <div className="content-premium">
                             <span className="title-premium">إضافة حركة مالية</span>
-                            <span className="subtitle-premium">تحصيل من عميل أو صرف للورشة</span>
+                            <span className="subtitle-premium">تحصيل عميل أو صرف للورشة</span>
                         </div>
                     </button>
                 </div>

@@ -1,0 +1,5 @@
+<svg width="32" height="32" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- The "k" logo from Kinz Home Art -->
+  <path d="M250 150 L250 874" stroke="#fa9a21" stroke-width="140" stroke-linecap="round" fill="none"/>
+  <path d="M680 300 L320 520 L680 740" stroke="#fa9a21" stroke-width="140" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

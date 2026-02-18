@@ -36,7 +36,7 @@ body {
 
 .sidebar {
   width: 280px;
-  background: rgba(23, 23, 25, 0.4);
+  background: rgba(30, 35, 45, 0.6);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-glass);
@@ -644,6 +644,8 @@ body {
 .stat-info {
   display: flex;
   flex-direction: column;
+  transform: translateY(-2px);
+  /* Lifted slightly */
 }
 
 .stat-label {
@@ -651,6 +653,14 @@ body {
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.legendary-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-6px);
+  /* Increased lift */
 }
 
 .stat-value {
@@ -765,6 +775,8 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  transform: translateY(-6px);
+  /* Increased lift */
 }
 
 .btn-premium-primary .icon-wrapper-premium {
@@ -773,7 +785,8 @@ body {
 }
 
 .btn-premium:hover .icon-wrapper-premium {
-  transform: scale(1.1) rotate(5deg);
+  transform: translateY(-6px) scale(1.1) rotate(5deg);
+  /* Preserve lift on hover */
   box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.4);
 }
 
@@ -782,6 +795,8 @@ body {
   flex-direction: column;
   align-items: flex-start;
   text-align: right;
+  transform: translateY(-6px);
+  /* Increased lift */
 }
 
 .title-premium {
@@ -1209,10 +1224,13 @@ p.text-secondary {
   align-items: center;
   justify-content: center;
   z-index: 2;
+  transform: translateY(-3px);
+  /* Lifted for better alignment */
 }
 
 .stat-content {
   z-index: 2;
+  transform: translateY(-2px);
 }
 
 .card-decoration {

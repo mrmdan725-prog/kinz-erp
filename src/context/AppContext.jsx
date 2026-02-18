@@ -8,10 +8,7 @@ export const AppProvider = ({ children }) => {
     const [transactions, setTransactions] = useState(() => {
         try {
             const saved = localStorage.getItem('kinz_transactions');
-            return saved ? JSON.parse(saved) : [
-                { id: '1', date: new Date().toISOString(), type: 'income', amount: 50000, category: 'دفعة تعاقد', notes: 'تعاقد مشروع الشيخ زايد', account: 'الخزنة الرئيسية' },
-                { id: '2', date: new Date().toISOString(), type: 'expense', amount: 15000, category: 'مشتريات خامات', notes: 'خامات ألمنيوم', account: 'الخزنة الرئيسية' }
-            ];
+            return saved ? JSON.parse(saved) : [];
         } catch (e) {
             console.error("Failed to parse transactions from localStorage:", e);
             return [];
@@ -22,15 +19,13 @@ export const AppProvider = ({ children }) => {
         try {
             const saved = localStorage.getItem('kinz_accounts');
             let data = saved ? JSON.parse(saved) : [
-                { id: '1', name: 'الخزنة الرئيسية', balance: 35000 },
-                { id: '2', name: 'البنك العربي', balance: 120000 }
+                { id: '1', name: 'الخزنة الرئيسية', balance: 0 }
             ];
             return data;
         } catch (e) {
             console.error("Failed to parse accounts from localStorage:", e);
             return [
-                { id: '1', name: 'الخزنة الرئيسية', balance: 35000 },
-                { id: '2', name: 'البنك العربي', balance: 120000 }
+                { id: '1', name: 'الخزنة الرئيسية', balance: 0 }
             ];
         }
     });
@@ -39,10 +34,7 @@ export const AppProvider = ({ children }) => {
     const [employees, setEmployees] = useState(() => {
         try {
             const saved = localStorage.getItem('kinz_employees');
-            return saved ? JSON.parse(saved) : [
-                { id: '1', name: 'أحمد محمود', role: 'فني تركيبات', baseSalary: 8000, joinDate: '2023-05-10' },
-                { id: '2', name: 'منى حسن', role: 'مصممة ديكور', baseSalary: 12000, joinDate: '2024-01-15' }
-            ];
+            return saved ? JSON.parse(saved) : [];
         } catch (e) {
             console.error("Failed to parse employees from localStorage:", e);
             return [];
@@ -53,10 +45,7 @@ export const AppProvider = ({ children }) => {
     const [recurringExpenses, setRecurringExpenses] = useState(() => {
         try {
             const saved = localStorage.getItem('kinz_recurring');
-            return saved ? JSON.parse(saved) : [
-                { id: '1', label: 'إيجار المعرض', amount: 15000, category: 'مصاريف معرض', account: 'الخزنة الرئيسية' },
-                { id: '2', label: 'فاتورة الكهرباء', amount: 1200, category: 'مصاريف معرض', account: 'الخزنة الرئيسية' }
-            ];
+            return saved ? JSON.parse(saved) : [];
         } catch (e) {
             console.error("Failed to parse recurring expenses from localStorage:", e);
             return [];
@@ -66,10 +55,7 @@ export const AppProvider = ({ children }) => {
     const [customers, setCustomers] = useState(() => {
         try {
             const saved = localStorage.getItem('kinz_customers');
-            return saved ? JSON.parse(saved) : [
-                { id: '1', name: 'أحمد علي', phone: '01012345678', address: 'القاهرة، مصر', email: 'ahmed@example.com', balance: 0 },
-                { id: '2', name: 'سارة حسن', phone: '01122334455', address: 'الجيزة، مصر', email: 'sarah@example.com', balance: 0 }
-            ];
+            return saved ? JSON.parse(saved) : [];
         } catch (e) {
             console.error("Failed to parse customers from localStorage:", e);
             return [];
@@ -89,11 +75,7 @@ export const AppProvider = ({ children }) => {
     const [inventory, setInventory] = useState(() => {
         try {
             const saved = localStorage.getItem('kinz_inventory');
-            return saved ? JSON.parse(saved) : [
-                { id: '1', name: 'خشب بلوط', unit: 'متر مربع', stock: 50 },
-                { id: '2', name: 'جرانيت كاونترتوب', unit: 'قطعة', stock: 10 },
-                { id: '3', name: 'مفصلات إغلاق هادئ', unit: 'قطعة', stock: 200 }
-            ];
+            return saved ? JSON.parse(saved) : [];
         } catch (e) {
             console.error("Failed to parse inventory from localStorage:", e);
             return [];
@@ -134,12 +116,7 @@ export const AppProvider = ({ children }) => {
     const [serviceItems, setServiceItems] = useState(() => {
         try {
             const saved = localStorage.getItem('kinz_service_items');
-            return saved ? JSON.parse(saved) : [
-                { id: 'srv-1', name: 'تصميم 3D', defaultPrice: 2000 },
-                { id: 'srv-2', name: 'نقل', defaultPrice: 500 },
-                { id: 'srv-3', name: 'تركيب', defaultPrice: 1500 },
-                { id: 'srv-4', name: 'إشراف هندسي', defaultPrice: 3000 }
-            ];
+            return saved ? JSON.parse(saved) : [];
         } catch (e) {
             console.error("Failed to parse service items:", e);
             return [];
@@ -177,9 +154,7 @@ export const AppProvider = ({ children }) => {
             let data = saved ? JSON.parse(saved) : [];
             const defaults = [
                 { id: '1', name: 'المسؤول', role: 'admin', username: 'admin', password: '123', status: 'active', permissions: adminPermissions },
-                { id: '2', name: 'مهندس أحمد', role: 'engineer', username: 'ahmed', password: '123', status: 'active', permissions: { ...defaultPermissions, canViewDashboard: true, canManageContracts: true, canManageInventory: true, canManageCustomers: true } },
-                { id: '3', name: 'محمد فتوح', role: 'admin', username: 'mhmd', password: '123', status: 'active', permissions: adminPermissions },
-                { id: '4', name: 'Mohamed Ahmed Shawkey', role: 'admin', username: 'absaif', password: '123', status: 'active', permissions: adminPermissions }
+                { id: '2', name: 'محمد رمضان', role: 'admin', username: 'mhmd', password: '123', status: 'active', permissions: adminPermissions }
             ];
 
             // Update old users with default permissions if missing
@@ -204,9 +179,7 @@ export const AppProvider = ({ children }) => {
             console.error("Failed to parse users from localStorage:", e);
             return [
                 { id: '1', name: 'المسؤول', role: 'admin', username: 'admin', password: '123', status: 'active', permissions: adminPermissions },
-                { id: '2', name: 'مهندس أحمد', role: 'engineer', username: 'ahmed', password: '123', status: 'active', permissions: { ...defaultPermissions, canViewDashboard: true, canManageContracts: true, canManageInventory: true, canManageCustomers: true } },
-                { id: '3', name: 'محمد فتوح', role: 'admin', username: 'mhmd', password: '123', status: 'active', permissions: adminPermissions },
-                { id: '4', name: 'Mohamed Ahmed Shawkey', role: 'admin', username: 'absaif', password: '123', status: 'active', permissions: adminPermissions }
+                { id: '2', name: 'محمد فتوح', role: 'admin', username: 'mhmd', password: '123', status: 'active', permissions: adminPermissions }
             ];
         }
     });
@@ -225,7 +198,7 @@ export const AppProvider = ({ children }) => {
         try {
             const saved = localStorage.getItem('kinz_settings');
             return saved ? JSON.parse(saved) : {
-                companyName: 'كينز للأثاث والمطابخ',
+                companyName: 'كنز للأثاث والمطابخ',
                 currency: 'ج.م',
                 taxRate: 14,
                 address: 'العاشر من رمضان، مصر',
@@ -319,6 +292,44 @@ export const AppProvider = ({ children }) => {
                 return;
             }
 
+            // Helper for Denormalization (Postgres lowercase -> React camelCase)
+            const denormalize = (data) => {
+                if (!data) return data;
+                const mapping = {
+                    'projectcost': 'projectCost',
+                    'projecttype': 'projectType',
+                    'customername': 'customerName',
+                    'unitprice': 'unitPrice',
+                    'serialnumber': 'serialNumber',
+                    'invoicefile': 'invoiceFile',
+                    'materialname': 'materialName',
+                    'customerid': 'customerId',
+                    'lastprice': 'lastPrice',
+                    'minstock': 'minStock',
+                    'scheduleddate': 'scheduledDate',
+                    'companyname': 'companyName',
+                    'taxrate': 'taxRate',
+                    'inspectionfee': 'inspectionFee',
+                    'representativename': 'representativeName',
+                    'representativenationalid': 'representativeNationalId',
+                    'currencysymbol': 'currencySymbol',
+                    'itemid': 'itemId',
+                    'itemname': 'itemName'
+                };
+
+                const mapItem = (item) => {
+                    const normalized = { ...item };
+                    Object.keys(mapping).forEach(lower => {
+                        if (item[lower] !== undefined) {
+                            normalized[mapping[lower]] = item[lower];
+                        }
+                    });
+                    return normalized;
+                };
+
+                return Array.isArray(data) ? data.map(mapItem) : mapItem(data);
+            };
+
             const tablesToSync = [
                 { name: 'customers', state: customers, setter: setCustomers },
                 { name: 'purchases', state: purchases, setter: setPurchases },
@@ -352,7 +363,12 @@ export const AppProvider = ({ children }) => {
                             const dataToInsert = (tableSpec.isSingle ? [tableSpec.state] : tableSpec.state).map(item => {
                                 const normalized = {};
                                 Object.keys(item).forEach(key => {
-                                    normalized[key.toLowerCase()] = item[key];
+                                    let value = item[key];
+                                    // Ensure projectCost is a number if present
+                                    if (key === 'projectCost' && typeof value === 'string') {
+                                        value = parseFloat(value);
+                                    }
+                                    normalized[key.toLowerCase()] = value;
                                 });
                                 return normalized;
                             }).slice(0, 50);
@@ -361,8 +377,9 @@ export const AppProvider = ({ children }) => {
                             if (insertError) console.error(`❌ Migration failed for ${tableSpec.name}:`, insertError.message);
                             else console.log(`✅ ${tableSpec.name} migrated`);
                         } else if (existingData && existingData.length > 0) {
-                            if (tableSpec.isSingle) tableSpec.setter(existingData[0]);
-                            else tableSpec.setter(existingData);
+                            const normalizedData = denormalize(existingData);
+                            if (tableSpec.isSingle) tableSpec.setter(normalizedData[0]);
+                            else tableSpec.setter(normalizedData);
                         }
                     } catch (err) { console.error(err); }
                 }
@@ -378,8 +395,9 @@ export const AppProvider = ({ children }) => {
                     .on('postgres_changes', { event: '*', schema: 'public', table: tableSpec.name }, (payload) => {
                         supabase.from(tableSpec.name).select('*').then(({ data }) => {
                             if (data) {
-                                if (tableSpec.isSingle) tableSpec.setter(data[0]);
-                                else tableSpec.setter(data);
+                                const normalizedData = denormalize(data);
+                                if (tableSpec.isSingle) tableSpec.setter(normalizedData[0]);
+                                else tableSpec.setter(normalizedData);
                             }
                         });
                     })
@@ -463,32 +481,39 @@ export const AppProvider = ({ children }) => {
         } catch (e) { console.error(e); }
 
         // Update Physical Account Balance
-        setAccounts(prevAccounts => prevAccounts.map(acc => {
-            if (acc.name === transaction.account) {
-                const newBalance = transaction.type === 'income'
-                    ? acc.balance + parseFloat(transaction.amount)
-                    : acc.balance - parseFloat(transaction.amount);
-                updateAccount({ ...acc, balance: newBalance });
-                return { ...acc, balance: newBalance };
-            }
-            return acc;
-        }));
+        setAccounts(prevAccounts => {
+            const nextAccounts = prevAccounts.map(acc => {
+                if (acc.name === transaction.account) {
+                    const newBalance = transaction.type === 'income'
+                        ? acc.balance + parseFloat(transaction.amount)
+                        : acc.balance - parseFloat(transaction.amount);
+
+                    // DB internal update (not calling function to avoid nested setAccounts)
+                    if (supabase) supabase.from('accounts').update({ balance: newBalance }).eq('id', acc.id).then();
+
+                    return { ...acc, balance: newBalance };
+                }
+                return acc;
+            });
+            return nextAccounts;
+        });
 
         // Update Customer Balance if customerName is provided OR if account is a customer name
-        // Balance = Total Income (Payments) - Total Expenses (Purchases/Costs)
-        // This represents Net Profit
         const targetCustomer = transaction.customerName || transaction.account;
+        setCustomers(prevCustomers => {
+            const nextCustomers = prevCustomers.map(cust => {
+                if (cust.name === targetCustomer) {
+                    const newBalance = (cust.balance || 0) + (transaction.type === 'income' ? parseFloat(transaction.amount) : -parseFloat(transaction.amount));
 
-        setCustomers(prevCustomers => prevCustomers.map(cust => {
-            if (cust.name === targetCustomer) {
-                // Income (+) adds to balance
-                // Expense (-) subtracts from balance
-                const newBalance = (cust.balance || 0) + (transaction.type === 'income' ? parseFloat(transaction.amount) : -parseFloat(transaction.amount));
-                updateCustomer({ ...cust, balance: newBalance });
-                return { ...cust, balance: newBalance };
-            }
-            return cust;
-        }));
+                    // DB internal update
+                    if (supabase) supabase.from('customers').update({ balance: newBalance }).eq('id', cust.id).then();
+
+                    return { ...cust, balance: newBalance };
+                }
+                return cust;
+            });
+            return nextCustomers;
+        });
     };
 
     const deleteTransaction = async (id) => {
@@ -596,10 +621,30 @@ export const AppProvider = ({ children }) => {
     };
 
     const updateAccount = async (updatedAccount) => {
-        setAccounts(accounts.map(acc => acc.id === updatedAccount.id ? updatedAccount : acc));
+        setAccounts(prev => prev.map(acc => acc.id === updatedAccount.id ? updatedAccount : acc));
         try {
             if (supabase) await supabase.from('accounts').update(updatedAccount).eq('id', updatedAccount.id);
         } catch (e) { console.error(e); }
+    };
+
+    const recalculateAccountBalances = () => {
+        setAccounts(prevAccounts => {
+            return prevAccounts.map(acc => {
+                const accTransactions = transactions.filter(t => t.account?.trim() === acc.name?.trim());
+                const calculatedBalance = accTransactions.reduce((sum, t) => {
+                    const amount = parseFloat(t.amount) || 0;
+                    return t.type === 'income' ? sum + amount : sum - amount;
+                }, 0);
+
+                // Round to 2 decimals to avoid floating point drift
+                const finalBalance = Number(calculatedBalance.toFixed(2));
+
+                // If the account has an initial balance established at creation but NO transactions, 
+                // we might be wiping it here. For safety, if balance is 0 and there are no transactions,
+                // we check if we should keep the current balance or trust the 0.
+                return { ...acc, balance: finalBalance };
+            });
+        });
     };
 
     const deleteAccount = async (id) => {
@@ -665,27 +710,6 @@ export const AppProvider = ({ children }) => {
         alert('✅ تم تصفير جميع الحسابات بنجاح');
     };
 
-    const resetAllCustomerBalances = async () => {
-        const confirmation = window.confirm('⚠️ هل أنت متأكد من تصفير أرصدة جميع العملاء؟\n\nسيتم تصفير أرصدة جميع العملاء إلى صفر.');
-        if (!confirmation) return;
-
-        // Reset all customer balances to zero
-        const resetCustomers = customers.map(cust => ({ ...cust, balance: 0 }));
-        setCustomers(resetCustomers);
-
-        // Update Supabase
-        try {
-            if (supabase) {
-                for (const cust of resetCustomers) {
-                    await supabase.from('customers').update({ balance: 0 }).eq('id', cust.id);
-                }
-            }
-        } catch (e) {
-            console.error('Error resetting customer balances:', e);
-        }
-
-        alert('✅ تم تصفير أرصدة جميع العملاء بنجاح');
-    };
 
     useEffect(() => {
         localStorage.setItem('kinz_employees', JSON.stringify(employees));
@@ -785,9 +809,9 @@ export const AppProvider = ({ children }) => {
                     phone: newCustomer.phone,
                     address: newCustomer.address,
                     email: newCustomer.email,
-                    balance: newCustomer.balance,
+                    balance: Number(newCustomer.balance) || 0,
                     projecttype: newCustomer.projectType,
-                    projectcost: newCustomer.projectCost,
+                    projectcost: Number(newCustomer.projectCost) || 0,
                     status: newCustomer.status
                 };
                 const { error } = await supabase.from('customers').insert(dbInfo);
@@ -808,9 +832,9 @@ export const AppProvider = ({ children }) => {
                     phone: updatedCustomer.phone,
                     address: updatedCustomer.address,
                     email: updatedCustomer.email,
-                    balance: updatedCustomer.balance,
+                    balance: Number(updatedCustomer.balance) || 0,
                     projecttype: updatedCustomer.projectType,
-                    projectcost: updatedCustomer.projectCost,
+                    projectcost: Number(updatedCustomer.projectCost) || 0,
                     status: updatedCustomer.status
                 };
                 await supabase.from('customers').update(dbInfo).eq('id', updatedCustomer.id);
@@ -1215,6 +1239,37 @@ export const AppProvider = ({ children }) => {
         setCurrentUser(null);
     };
 
+    const factoryReset = async () => {
+        if (!window.confirm('⚠️ تحذير نهائي: سيتم مسح كافة البيانات من السحابة ومن هذا الجهاز نهائياً. لا يمكن التراجع!\nهل أنت متأكد؟')) return;
+
+        const tables = [
+            'customers', 'purchases', 'inventory', 'inventory_movements',
+            'inspections', 'invoices', 'users', 'settings',
+            'transactions', 'accounts', 'employees', 'recurring', 'contract_options'
+        ];
+
+        try {
+            // 1. Clear Supabase
+            if (supabase) {
+                for (const table of tables) {
+                    await supabase.from(table).delete().neq('id', '0'); // Delete all rows
+                }
+            }
+
+            // 2. Clear LocalStorage
+            const keys = Object.keys(localStorage);
+            keys.forEach(key => {
+                if (key.startsWith('kinz_')) localStorage.removeItem(key);
+            });
+
+            // 3. Reload App
+            window.location.reload();
+        } catch (e) {
+            console.error("Factory reset failed:", e);
+            alert("حدث خطأ أثناء مسح البيانات.");
+        }
+    };
+
     return (
         <AppContext.Provider value={{
             customers,
@@ -1257,8 +1312,8 @@ export const AppProvider = ({ children }) => {
             updateAccount,
             deleteAccount,
             adjustAccountBalance,
+            recalculateAccountBalances,
             resetAllAccounts,
-            resetAllCustomerBalances,
             adjustCustomerBalance,
             employees,
             addEmployee,
@@ -1277,6 +1332,7 @@ export const AppProvider = ({ children }) => {
             updateInventoryItem,
             deleteInventoryItem,
             consumeMaterial,
+            factoryReset,
             darkMode,
             toggleDarkMode: () => setDarkMode(!darkMode)
         }}>

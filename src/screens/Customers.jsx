@@ -48,9 +48,10 @@ const Customers = () => {
         addInvoice,
         addTransaction,
         deleteTransaction,
-        resetAllCustomerBalances,
         systemSettings,
-        contractOptions
+        contractOptions,
+        deletePurchase,
+        updatePurchase
     } = useApp();
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
@@ -61,7 +62,7 @@ const Customers = () => {
         name: '',
         phone: '',
         address: '',
-        projectType: 'مطبخ', // Default to match contractOptions
+        projectType: '', // Default to match contractOptions
         projectCost: '', // New Field: Manual Project Cost / Budget
         status: 'design' // Default Status
     });
@@ -159,6 +160,21 @@ const Customers = () => {
             }],
             account: accounts[0]?.name || 'الخزنة الرئيسية'
         });
+    };
+
+    const handleDeletePurchaseGroup = (items) => {
+        if (window.confirm(`⚠️ هل أنت متأكد من حذف هذا الطلب بالكامل (${items.length} بنود)؟\nسيتم استرجاع المبالغ لرصيد العميل تلقائياً.`)) {
+            items.forEach(item => {
+                deletePurchase(item.id);
+            });
+        }
+    };
+
+    const handleEditPurchaseGroup = (items) => {
+        // Simple edit logic: load items into the modal and delete the old ones on submit
+        // or just alert that it's coming soon if too complex.
+        // For now, let's at least allow deletion as it's the most requested.
+        alert('خاصية التعديل قيد التطوير حالياً، يمكنك حذف الطلب وإضافته مرة أخرى لتعديله.');
     };
 
 
@@ -287,19 +303,16 @@ const Customers = () => {
                     <h2>إدارة العملاء</h2>
                 </div>
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                    <button className="btn-export-excel" onClick={handleExport} title="تصدير لإكسل">
-                        <FileSpreadsheet size={18} />
-                        تصدير البيانات
+                    <button className="btn-premium" onClick={handleExport} style={{ border: '1px solid rgba(46, 204, 113, 0.2)' }}>
+                        <div className="icon-wrapper-premium" style={{ background: 'rgba(46, 204, 113, 0.15)', color: '#2ecc71' }}>
+                            <FileSpreadsheet size={20} />
+                        </div>
+                        <div className="content-premium">
+                            <span className="title-premium">تصدير البيانات</span>
+                            <span className="subtitle-premium">قائمة العملاء (Excel)</span>
+                        </div>
                     </button>
-                    <button
-                        className="btn-export-excel"
-                        onClick={resetAllCustomerBalances}
-                        style={{ background: 'rgba(255, 77, 77, 0.1)', borderColor: 'rgba(255, 77, 77, 0.3)', color: '#ff4d4d' }}
-                        title="تصفير أرصدة جميع العملاء"
-                    >
-                        <Trash2 size={18} />
-                        تصفير الأرصدة
-                    </button>
+
                     <button className="btn-premium btn-premium-primary" onClick={() => {
                         setFormData({ name: '', phone: '', address: '', email: '', projectType: 'مطبخ', projectCost: '', status: 'design' });
                         setIsEditing(false);
@@ -372,7 +385,7 @@ const Customers = () => {
                                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '12px' }}>
                                     <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', textAlign: 'center' }}>
                                         <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block' }}>تكلفة المشروع</span>
-                                        <span style={{ fontWeight: '700', color: 'white', fontSize: '15px' }}>{(customer.projectCost || 0).toLocaleString()}</span>
+                                        <span style={{ fontWeight: '700', color: 'white', fontSize: '15px' }}>{Number(customer.projectCost || 0).toLocaleString()}</span>
                                     </div>
                                     <div style={{ padding: '8px', background: 'rgba(var(--primary-rgb), 0.1)', borderRadius: '8px', textAlign: 'center', border: '1px solid rgba(var(--primary-rgb), 0.2)' }}>
                                         <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block' }}>صافي الربح</span>
@@ -465,6 +478,10 @@ const Customers = () => {
                                 </div>
                                 <div className="header-actions">
                                     <button className="btn-icon-bg" onClick={() => handleEditClick(null, activeCustomer)} title="تعديل البيانات"><PencilLine size={18} /></button>
+                                    <button className="btn-icon-bg delete-btn" onClick={(e) => {
+                                        handleDeleteClick(e, activeCustomer);
+                                        setShowHistoryModal(false);
+                                    }} title="حذف العميل"><UserMinus size={18} /></button>
                                     <button className="btn-icon" onClick={() => setShowHistoryModal(false)}>&times;</button>
                                 </div>
                             </div>
@@ -575,7 +592,7 @@ const Customers = () => {
                                                     <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
                                                         <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>ميزانية المشروع</span>
                                                         <span style={{ fontSize: '18px', fontWeight: '800', color: 'white', fontFamily: 'monospace' }}>
-                                                            {(activeCustomer.projectCost || 0).toLocaleString()} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
+                                                            {Number(activeCustomer.projectCost || 0).toLocaleString()} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
                                                         </span>
                                                     </div>
 
@@ -686,7 +703,20 @@ const Customers = () => {
                                                     </div>
                                                     <div className="item-actions">
                                                         <span className="representative-tag">{ins.representative || 'بدون مهندس'}</span>
-                                                        <button className="btn-text" onClick={() => alert('قريباً: عرض ملف المعاينة كاملاً')}>عرض</button>
+                                                        <button className="btn-text" style={{ marginLeft: '8px' }} onClick={() => alert('قريباً: عرض ملف المعاينة كاملاً')}>عرض</button>
+                                                        <button
+                                                            className="btn-icon-action delete-btn"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                if (window.confirm('هل أنت متأكد من حذف هذه المعاينة؟')) {
+                                                                    deleteInspection(ins.id);
+                                                                }
+                                                            }}
+                                                            title="حذف المعاينة"
+                                                            style={{ padding: '4px', width: '28px', height: '28px' }}
+                                                        >
+                                                            <Trash2 size={14} />
+                                                        </button>
                                                     </div>
                                                 </div>
                                             ))}
@@ -725,7 +755,17 @@ const Customers = () => {
                                                                             <span className="item-date">{date} <span style={{ opacity: 0.5 }}>#{key.slice(-6)}</span></span>
                                                                         </div>
                                                                     </div>
-                                                                    <span className="item-amount" style={{ color: '#e67e22' }}>{(totalGroup).toLocaleString()} ج.م</span>
+                                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                                        <span className="item-amount" style={{ color: '#e67e22', marginLeft: '10px' }}>{(totalGroup).toLocaleString()} ج.م</span>
+                                                                        <div className="item-actions">
+                                                                            <button className="btn-icon-action" onClick={() => handleEditPurchaseGroup(items)} title="تعديل">
+                                                                                <PencilLine size={14} className="icon-edit" />
+                                                                            </button>
+                                                                            <button className="btn-icon-action delete-btn" onClick={() => handleDeletePurchaseGroup(items)} title="حذف">
+                                                                                <Trash2 size={14} className="icon-delete" />
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                                                                     {items.map((subItem, idx) => (
@@ -748,7 +788,17 @@ const Customers = () => {
                                                                         <span className="item-date">{date}</span>
                                                                     </div>
                                                                 </div>
-                                                                <span className="item-amount">{(Number(p.total) || 0).toLocaleString()} ج.م</span>
+                                                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                                    <span className="item-amount" style={{ marginLeft: '10px' }}>{(Number(p.total) || 0).toLocaleString()} ج.م</span>
+                                                                    <div className="item-actions">
+                                                                        <button className="btn-icon-action" onClick={() => handleEditPurchaseGroup([p])} title="تعديل">
+                                                                            <PencilLine size={14} className="icon-edit" />
+                                                                        </button>
+                                                                        <button className="btn-icon-action delete-btn" onClick={() => handleDeletePurchaseGroup([p])} title="حذف">
+                                                                            <Trash2 size={14} className="icon-delete" />
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         );
                                                     }
@@ -926,7 +976,7 @@ const Customers = () => {
                                             <input
                                                 required
                                                 type="number"
-                                                step="0.01"
+                                                step="any"
                                                 value={item.price}
                                                 onChange={e => {
                                                     const newItems = [...purchaseData.items];
@@ -934,6 +984,7 @@ const Customers = () => {
                                                     setPurchaseData({ ...purchaseData, items: newItems });
                                                 }}
                                                 placeholder="0.00"
+                                                className="no-spinner"
                                                 style={{
                                                     background: 'rgba(255,255,255,0.05)',
                                                     border: 'none',
@@ -1138,8 +1189,10 @@ const Customers = () => {
                                     <label>تكلفة المشروع (الميزانية التقديرية)</label>
                                     <input
                                         type="number"
+                                        step="any"
                                         value={formData.projectCost}
                                         onChange={e => setFormData({ ...formData, projectCost: e.target.value })}
+                                        onWheel={e => e.target.blur()} // Prevent scroll wheel changes
                                         placeholder="0.00"
                                         style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--primary)' }}
                                     />
@@ -1585,6 +1638,16 @@ const Customers = () => {
                     font-size: 22px;
                     font-weight: 800;
                     box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.3);
+                }
+                
+                /* Hide spinners for number inputs */
+                .no-spinner::-webkit-inner-spin-button,
+                .no-spinner::-webkit-outer-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+                .no-spinner {
+                    -moz-appearance: textfield;
                 }
             `}</style>
         </div >
