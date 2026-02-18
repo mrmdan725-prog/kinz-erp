@@ -377,7 +377,7 @@ const Customers = () => {
                                         <span className={`badge ${customer.status === 'delivery' || customer.status === 'delivered' ? 'badge-success' : 'badge-warning'}`} style={{ fontSize: '10px' }}>
                                             {customer.status === 'delivery' ? 'في التسليم' :
                                                 customer.status === 'delivered' ? 'تم التسليم' :
-                                                    customer.status === 'production' ? 'تصنيع' : 'تصميم'}
+                                                    customer.status === 'production' ? 'تصنيع' : 'معاينة وتصميم'}
                                         </span>
                                     </div>
                                 </div>
@@ -474,7 +474,7 @@ const Customers = () => {
                                             <span className={`badge ${activeCustomer.status === 'delivery' || activeCustomer.status === 'delivered' ? 'badge-success' : 'badge-warning'}`} style={{ fontSize: '10px' }}>
                                                 {activeCustomer.status === 'delivery' ? 'في التسليم' :
                                                     activeCustomer.status === 'delivered' ? 'تم التسليم' :
-                                                        activeCustomer.status === 'production' ? 'تصنيع' : 'تصميم'}
+                                                        activeCustomer.status === 'production' ? 'تصنيع' : 'معاينة وتصميم'}
                                             </span>
                                         </div>
                                     </div>
@@ -538,7 +538,7 @@ const Customers = () => {
                                                 }}></div>
 
                                                 {[
-                                                    { id: 'design', label: 'تصميم', icon: <Edit size={14} /> },
+                                                    { id: 'design', label: 'معاينة وتصميم', icon: <Edit size={14} /> },
                                                     { id: 'production', label: 'تصنيع', icon: <Settings size={14} /> },
                                                     { id: 'delivery', label: 'تسليم', icon: <Truck size={14} /> },
                                                     { id: 'delivered', label: 'منتهي', icon: <CheckCircle size={14} /> }
@@ -593,7 +593,7 @@ const Customers = () => {
                                                 <div className="stats-grid-modern" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginTop: '15px', gridColumn: 'span 2' }}>
                                                     {/* Row 1: Budget and Profit */}
                                                     <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>ميزانية المشروع</span>
+                                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>المبلغ المتفق عليه للمشروع</span>
                                                         <span style={{ fontSize: '18px', fontWeight: '800', color: 'white', fontFamily: 'monospace' }}>
                                                             {Number(activeCustomer.projectCost || 0).toLocaleString()} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
                                                         </span>
@@ -1109,7 +1109,7 @@ const Customers = () => {
                         <div className="modal glass" style={{ maxWidth: '800px', width: '95%' }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', padding: '0 20px' }}>
                                 <Search className="text-primary" />
-                                <h3>نموذج معاينة جديد ({inspectionType === 'kitchen' ? 'مطبخ' : 'درسينج'}) - {selectedCustomer.name}</h3>
+                                <h3>نموذج معاينة جديد - {selectedCustomer.name}</h3>
                             </div>
                             <InspectionForm
                                 customer={selectedCustomer}
@@ -1202,7 +1202,7 @@ const Customers = () => {
                                     <textarea value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} />
                                 </div>
                                 <div className="form-group">
-                                    <label>تكلفة المشروع (الميزانية التقديرية)</label>
+                                    <label>المبلغ المتفق عليه للمشروع</label>
                                     <input
                                         type="number"
                                         step="any"
@@ -1252,7 +1252,7 @@ const Customers = () => {
                                             outline: 'none'
                                         }}
                                     >
-                                        <option value="design">مرحلة التصميم</option>
+                                        <option value="design">مرحلة المعاينة والتصميم</option>
                                         <option value="production">مرحلة التصنيع</option>
                                         <option value="delivery">جاهز للتسليم (في التسليم)</option>
                                         <option value="delivered">تم التسليم النهائي</option>

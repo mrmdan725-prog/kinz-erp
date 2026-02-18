@@ -8,7 +8,6 @@ import {
     Calendar,
     User,
     Eye,
-    Receipt,
     Trash2,
     CheckCircle2,
     Clock,
@@ -20,7 +19,7 @@ import {
 import InspectionForm from '../components/InspectionForm';
 
 const Inspections = () => {
-    const { inspections, deleteInspection, addInspection, customers, addInvoice, systemSettings } = useApp();
+    const { inspections, deleteInspection, addInspection, customers, systemSettings } = useApp();
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
@@ -50,26 +49,7 @@ const Inspections = () => {
         }
     };
 
-    const handleGenerateInvoice = (ins) => {
-        const fee = Number(systemSettings.inspectionFee || 500);
-        const invoice = {
-            customerId: ins.customerId,
-            customerName: ins.customerName,
-            type: 'inspection',
-            date: new Date().toISOString(),
-            status: 'draft',
-            relatedId: ins.id,
-            items: [
-                { description: `رسوم معاينة فنية - ${ins.type === 'kitchen' ? 'مطبخ' : 'درسينج'}`, quantity: 1, unitPrice: fee, total: fee }
-            ],
-            subtotal: fee,
-            taxAmount: (fee * (systemSettings.taxRate || 14)) / 100,
-            discount: 0,
-            totalAmount: fee + ((fee * (systemSettings.taxRate || 14)) / 100)
-        };
-        addInvoice(invoice);
-        alert('تم إنشاء مسودة الفاتورة بنجاح.');
-    };
+
 
     const handleFormSubmit = (data) => {
         addInspection(data);
@@ -228,9 +208,6 @@ const Inspections = () => {
                                                 <button className="btn-icon small" title="عرض التفاصيل" onClick={() => navigate(`/inspection/${ins.id}`)}>
                                                     <Eye size={16} />
                                                 </button>
-                                                <button className="btn-icon small" title="إصدار فاتورة" onClick={() => handleGenerateInvoice(ins)}>
-                                                    <Receipt size={16} />
-                                                </button>
                                                 <button className="btn-icon small text-danger" title="حذف" onClick={() => { if (window.confirm('حذف المعاينة؟')) deleteInspection(ins.id); }}>
                                                     <Trash2 size={16} />
                                                 </button>
@@ -274,7 +251,6 @@ const Inspections = () => {
                                     </div>
                                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', borderTop: '1px solid var(--glass-border)', paddingTop: '15px' }}>
                                         <button className="btn-icon-action" onClick={() => navigate(`/inspection/${ins.id}`)} title="عرض"><Eye size={16} /></button>
-                                        <button className="btn-icon-action" onClick={() => handleGenerateInvoice(ins)} title="فاتورة"><Receipt size={16} /></button>
                                         <button className="btn-icon-action delete-btn" onClick={() => { if (window.confirm('حذف المعاينة؟')) deleteInspection(ins.id); }} title="حذف"><Trash2 size={16} /></button>
                                     </div>
                                 </div>
