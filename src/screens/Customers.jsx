@@ -25,8 +25,9 @@ import {
     Edit, // Added
     Settings, // Added
     Truck, // Added
-    CheckCircle, // Added
-    X // Added
+    CheckCircle,
+    X,
+    Download
 } from 'lucide-react';
 import { exportToExcel, formatters } from '../utils/excelExport';
 
@@ -88,6 +89,8 @@ const Customers = () => {
         account: accounts[0]?.name || 'الخزنة الرئيسية',
         category: 'دفعة تعاقد'
     });
+    const [showPreviewModal, setShowPreviewModal] = useState(false);
+    const [previewFile, setPreviewFile] = useState(null);
     const activeCustomer = selectedCustomer ? (customers.find(c => c.id === selectedCustomer.id) || selectedCustomer) : null;
 
     const handleSubmit = (e) => {
@@ -703,7 +706,20 @@ const Customers = () => {
                                                     </div>
                                                     <div className="item-actions">
                                                         <span className="representative-tag">{ins.representative || 'بدون مهندس'}</span>
-                                                        <button className="btn-text" style={{ marginLeft: '8px' }} onClick={() => alert('قريباً: عرض ملف المعاينة كاملاً')}>عرض</button>
+                                                        <button
+                                                            className="btn-text"
+                                                            style={{ marginLeft: '8px' }}
+                                                            onClick={() => {
+                                                                if (ins.attachment) {
+                                                                    setPreviewFile({ url: ins.attachment, type: ins.attachmentType, name: `معاينة_${ins.type}_${ins.customerName}` });
+                                                                    setShowPreviewModal(true);
+                                                                } else {
+                                                                    alert('لا يوجد ملف مرفق لهذه المعاينة');
+                                                                }
+                                                            }}
+                                                        >
+                                                            عرض
+                                                        </button>
                                                         <button
                                                             className="btn-icon-action delete-btn"
                                                             onClick={(e) => {
@@ -1649,6 +1665,59 @@ const Customers = () => {
                 .no-spinner {
                     -moz-appearance: textfield;
                 }
+            `}</style>
+            {showPreviewModal && previewFile && (
+                <div className="modal-overlay" style={{ zIndex: 1200 }} onClick={() => setShowPreviewModal(false)}>
+                    <div className="modal glass preview-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '95vh', width: '900px', display: 'flex', flexDirection: 'column' }}>
+                        <div className="modal-header">
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <div className="icon-wrapper-premium" style={{ width: '35px', height: '35px' }}>
+                                    <Eye size={18} />
+                                </div>
+                                <h3 style={{ margin: 0 }}>معاينة ملف المعاينة</h3>
+                            </div>
+                            <button className="btn-icon" onClick={() => setShowPreviewModal(false)}>&times;</button>
+                        </div>
+                        <div className="modal-body" style={{ flex: 1, overflow: 'auto', background: 'rgba(0,0,0,0.2)', padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+                            {previewFile.type?.includes('pdf') ? (
+                                <iframe
+                                    src={previewFile.url}
+                                    style={{ width: '100%', height: '70vh', border: 'none', borderRadius: '12px', background: 'white' }}
+                                    title="PDF Preview"
+                                />
+                            ) : (
+                                <img
+                                    src={previewFile.url}
+                                    alt="Preview"
+                                    style={{ maxWidth: '100%', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
+                                />
+                            )}
+                        </div>
+                        <div className="modal-footer" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '15px 20px' }}>
+                            <button className="btn-secondary" onClick={() => setShowPreviewModal(false)}>إغلاق</button>
+                            <a
+                                href={previewFile.url}
+                                download={`${previewFile.name || 'preview'}`}
+                                className="btn-primary"
+                                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px' }}
+                            >
+                                <Download size={18} /> تحميل الملف
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <style>{`
+                .preview-modal {
+                    animation: modalFadeIn 0.3s ease-out;
+                }
+                @keyframes modalFadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .inspection-type-icon.kitchen { background: rgba(var(--primary-rgb), 0.1); color: var(--primary); }
+                .inspection-type-icon.dressing { background: rgba(155, 89, 182, 0.1); color: #9b59b6; }
             `}</style>
         </div >
     );
