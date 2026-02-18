@@ -33,8 +33,8 @@ const Login = () => {
             <div className="login-card glass fade-in">
                 <div className="login-header">
                     <Logo width={300} className="login-logo-main" style={{ marginBottom: '30px', justifyContent: 'center' }} />
-                    <h1>نظام كينز الذكي ERP</h1>
-                    <p>أهلاً بك في عالم كينز للأثاث والمطابخ، يرجى الدخول للمتابعة</p>
+                    <h1>Kinz ERP System</h1>
+                    <p>أهلاً بك في عالم كنز للأثاث والمطابخ، يرجى الدخول للمتابعة</p>
                 </div>
 
                 {error && <div className="login-error arabic-text">{error}</div>}
