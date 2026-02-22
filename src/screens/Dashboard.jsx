@@ -214,8 +214,8 @@ const Dashboard = () => {
                                         }}>
                                             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '30%', background: 'rgba(255,255,255,0.15)', borderRadius: '10px 10px 0 0' }}></div>
                                         </div>
-                                        <span style={{ fontSize: '11px', color: 'var(--text-primary)', fontWeight: '700', marginTop: '4px', textAlign: 'center', maxWidth: '80px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                            {cust.name.split(' ')[0]}
+                                        <span style={{ fontSize: '11px', color: 'var(--text-primary)', fontWeight: '700', marginTop: '4px', textAlign: 'center', maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                            {cust.name}
                                         </span>
                                     </div>
                                 );
