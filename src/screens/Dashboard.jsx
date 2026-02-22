@@ -93,8 +93,7 @@ const Dashboard = () => {
                     {[
                         { label: 'إضافة عميل', icon: Users, link: '/customers', color: '#3498db' },
                         { label: 'طلب شراء', icon: ShoppingCart, link: '/purchasing', color: '#e67e22' },
-                        { label: 'تحليل المخزن', icon: Package, link: '/inventory', color: 'var(--primary)' },
-                        { label: 'معاينة فنية', icon: Eye, link: '/inspections', color: '#9b59b6' }
+                        { label: 'تحليل المخزن', icon: Package, link: '/inventory', color: 'var(--primary)' }
                     ].map((btn, i) => (
                         <button
                             key={i}

@@ -28,9 +28,9 @@ const InspectionDetails = () => {
         return (
             <div style={{ padding: '50px', textAlign: 'center' }}>
                 <h2>المعاينة غير موجودة</h2>
-                <button className="btn-secondary" onClick={() => navigate('/inspections')}>
+                <button className="btn-secondary" onClick={() => navigate('/customers')}>
                     <ArrowRight size={18} />
-                    العودة للمعاينة
+                    العودة للعملاء
                 </button>
             </div>
         );
@@ -47,9 +47,9 @@ const InspectionDetails = () => {
     return (
         <div className="inspection-details-container arabic-text">
             <div className="no-print actions-top" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '25px', padding: '0 10px' }}>
-                <button className="btn-secondary" onClick={() => navigate('/inspections')}>
+                <button className="btn-secondary" onClick={() => navigate('/customers')}>
                     <ArrowRight size={18} />
-                    العودة للمعاينة
+                    العودة للعملاء
                 </button>
                 <div style={{ display: 'flex', gap: '10px' }}>
                     {inspection.status === 'planned' && (

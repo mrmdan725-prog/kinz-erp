@@ -503,7 +503,10 @@ export const AppProvider = ({ children }) => {
         setCustomers(prevCustomers => {
             const nextCustomers = prevCustomers.map(cust => {
                 if (cust.name === targetCustomer) {
-                    const newBalance = (cust.balance || 0) + (transaction.type === 'income' ? parseFloat(transaction.amount) : -parseFloat(transaction.amount));
+                    // Standard Ledger Logic: Income increases balance, Expense decreases it.
+                    const amount = parseFloat(transaction.amount) || 0;
+                    const adjustment = transaction.type === 'income' ? amount : -amount;
+                    const newBalance = (cust.balance || 0) + adjustment;
 
                     // DB internal update
                     if (supabase) supabase.from('customers').update({ balance: newBalance }).eq('id', cust.id).then();
@@ -536,9 +539,11 @@ export const AppProvider = ({ children }) => {
             const targetCustomer = transaction.customerName || transaction.account;
             setCustomers(prevCustomers => prevCustomers.map(cust => {
                 if (cust.name === targetCustomer) {
-                    // Reverse: Income was (+), so now (-); Expense was (-), so now (+)
-                    const newBalance = (cust.balance || 0) - (transaction.type === 'income' ? parseFloat(transaction.amount) : -parseFloat(transaction.amount));
-                    updateCustomer({ ...cust, balance: newBalance }); // Handles Firestore
+                    // Reverse Standard Ledger Logic: Subtract income, Add back expense
+                    const amount = parseFloat(transaction.amount) || 0;
+                    const adjustment = transaction.type === 'income' ? -amount : amount;
+                    const newBalance = (cust.balance || 0) + adjustment;
+                    updateCustomer({ ...cust, balance: newBalance });
                     return { ...cust, balance: newBalance };
                 }
                 return cust;
@@ -584,23 +589,21 @@ export const AppProvider = ({ children }) => {
 
         setCustomers(prevCustomers => prevCustomers.map(cust => {
             let newBalance = cust.balance || 0;
+            const oldAmount = parseFloat(oldTransaction.amount) || 0;
+            const newAmount = parseFloat(updatedTransaction.amount) || 0;
 
             // 1. Reverse old impact
             if (cust.name === oldTargetCustomer) {
-                newBalance = oldTransaction.type === 'income'
-                    ? newBalance - parseFloat(oldTransaction.amount) // Remove previously added income
-                    : newBalance + parseFloat(oldTransaction.amount); // Add back previously subtracted expense
+                newBalance += (oldTransaction.type === 'income' ? -oldAmount : oldAmount);
             }
 
             // 2. Apply new impact
             if (cust.name === newTargetCustomer) {
-                newBalance = updatedTransaction.type === 'income'
-                    ? newBalance + parseFloat(updatedTransaction.amount) // Add new income
-                    : newBalance - parseFloat(updatedTransaction.amount); // Subtract new expense
+                newBalance += (updatedTransaction.type === 'income' ? newAmount : -newAmount);
             }
 
             if (newBalance !== (cust.balance || 0)) {
-                updateCustomer({ ...cust, balance: newBalance }); // Handles Firestore
+                updateCustomer({ ...cust, balance: newBalance });
             }
             return { ...cust, balance: newBalance };
         }));
@@ -792,13 +795,12 @@ export const AppProvider = ({ children }) => {
             phone: customer.phone || '',
             address: customer.address || '',
             email: customer.email || '',
-            balance: Number(customer.balance) || 0,
+            balance: Number(customer.balance) || 0, // Manual initial balance
             projectType: customer.projectType || 'kitchen',
-            projectCost: Number(customer.projectCost) || 0, // Added Project Cost (Budget)
+            projectCost: Number(customer.projectCost) || 0,
             status: customer.status || 'design' // Default status
         };
-
-        setCustomers(prev => [...prev, newCustomer]);
+        setCustomers([newCustomer, ...customers]);
 
         try {
             if (supabase) {

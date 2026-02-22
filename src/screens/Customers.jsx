@@ -385,18 +385,66 @@ const Customers = () => {
                             <div className="card-body">
                                 <p><strong>البريد الإلكتروني:</strong> {customer.email}</p>
                                 <p><strong>العنوان:</strong> {customer.address}</p>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '12px' }}>
-                                    <div style={{ padding: '8px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', textAlign: 'center' }}>
-                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block' }}>تكلفة المشروع</span>
-                                        <span style={{ fontWeight: '700', color: 'white', fontSize: '15px' }}>{Number(customer.projectCost || 0).toLocaleString()}</span>
-                                    </div>
-                                    <div style={{ padding: '8px', background: 'rgba(var(--primary-rgb), 0.1)', borderRadius: '8px', textAlign: 'center', border: '1px solid rgba(var(--primary-rgb), 0.2)' }}>
-                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block' }}>صافي الربح</span>
-                                        <span style={{ fontWeight: '700', color: (customer.balance || 0) >= 0 ? '#2ecc71' : '#ff4d4d' }}>
-                                            {(customer.balance || 0).toLocaleString()}
-                                        </span>
-                                    </div>
-                                </div>
+
+                                {/* Financial Overview for Card */}
+                                {(() => {
+                                    const cTransactions = transactions.filter(t => t.customerName === customer.name || t.account === customer.name);
+                                    const cIncome = cTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+                                    const cExpenses = cTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+                                    const cProjectCost = Number(customer.projectCost || 0);
+                                    const cBalance = cIncome - cExpenses;
+                                    const isPaid = cIncome >= cProjectCost && cProjectCost > 0;
+                                    const cNetProfit = cProjectCost - cExpenses;
+
+                                    return (
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '15px' }}>
+                                            {/* Box 1: Agreed */}
+                                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                                <span style={{ fontSize: '9px', color: 'var(--text-secondary)', display: 'block' }}>المبلغ المتفق عليه</span>
+                                                <span style={{ fontWeight: '700', color: 'white', fontSize: '13px' }}>{cProjectCost.toLocaleString()}</span>
+                                            </div>
+
+                                            {/* Box 2: Net Profit */}
+                                            <div style={{
+                                                padding: '8px',
+                                                background: isPaid ? 'rgba(46, 204, 113, 0.08)' : 'rgba(255,255,255,0.03)',
+                                                borderRadius: '10px',
+                                                textAlign: 'center',
+                                                border: isPaid ? '1px solid rgba(46, 204, 113, 0.2)' : '1px solid rgba(255,255,255,0.05)'
+                                            }}>
+                                                <span style={{ fontSize: '9px', color: isPaid ? '#2ecc71' : 'var(--text-secondary)', display: 'block' }}>صافي الربح</span>
+                                                <span style={{ fontWeight: '700', color: isPaid ? (cNetProfit >= 0 ? '#2ecc71' : '#ff4d4d') : 'var(--text-dim)', fontSize: '13px' }}>
+                                                    {isPaid ? cNetProfit.toLocaleString() : '---'}
+                                                </span>
+                                            </div>
+
+                                            {/* Box 3: Current Balance (Full Width) */}
+                                            <div style={{
+                                                padding: '10px',
+                                                background: cBalance >= 0 ? 'rgba(46, 204, 113, 0.05)' : 'rgba(255, 77, 77, 0.05)',
+                                                borderRadius: '10px',
+                                                textAlign: 'center',
+                                                border: cBalance >= 0 ? '1px solid rgba(46, 204, 113, 0.1)' : '1px solid rgba(255, 77, 77, 0.1)',
+                                                gridColumn: 'span 2'
+                                            }}>
+                                                <span style={{ fontSize: '9px', color: 'var(--text-secondary)', display: 'block' }}>الرصيد (الوضع الحالي)</span>
+                                                <span style={{ fontWeight: '800', color: cBalance >= 0 ? '#2ecc71' : '#ff4d4d', fontSize: '16px' }}>
+                                                    {cBalance.toLocaleString()} <small style={{ fontSize: '10px' }}>ج.م</small>
+                                                </span>
+                                            </div>
+
+                                            {/* Row 3: Mixed small stats */}
+                                            <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', padding: '5px' }}>
+                                                <span style={{ fontSize: '8px', color: 'var(--text-dim)', display: 'block' }}>إجمالي المدفوعات</span>
+                                                <span style={{ fontSize: '10px', color: '#2ecc71', fontWeight: 'bold' }}>+{cIncome.toLocaleString()}</span>
+                                            </div>
+                                            <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', padding: '5px' }}>
+                                                <span style={{ fontSize: '8px', color: 'var(--text-dim)', display: 'block' }}>إجمالي المصروفات</span>
+                                                <span style={{ fontSize: '10px', color: '#ff4d4d', fontWeight: 'bold' }}>-{cExpenses.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
 
                             <div className="card-footer customer-actions-modern">
@@ -582,69 +630,61 @@ const Customers = () => {
                                         {(() => {
                                             const totalIncome = customerTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
                                             const totalExpenses = customerTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
-                                            // Ensure we use the actual customer balance from DB to match the "outside" card view
-                                            const calculatedProfit = totalIncome - totalExpenses;
-                                            const storedProfit = activeCustomer.balance !== undefined ? activeCustomer.balance : calculatedProfit;
+                                            const projectCost = Number(activeCustomer.projectCost || 0);
 
-                                            // Check for mismatch
-                                            const isMismatch = Math.abs(calculatedProfit - storedProfit) > 1;
+                                            // BUSINESS LOGIC: 
+                                            // 1. Current Balance = cash-on-hand for this project (Paid - Spent)
+                                            const currentBalance = totalIncome - totalExpenses;
+
+                                            // 2. Net Profit = Finalized profit (Agreement - Spent) 
+                                            const isFullyPaid = totalIncome >= projectCost && projectCost > 0;
+                                            const netProfitVal = projectCost - totalExpenses;
 
                                             return (
-                                                <div className="stats-grid-modern" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', marginTop: '15px', gridColumn: 'span 2' }}>
-                                                    {/* Row 1: Budget and Profit */}
-                                                    <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
-                                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>المبلغ المتفق عليه للمشروع</span>
+                                                <div className="stats-grid-modern" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginTop: '15px', gridColumn: 'span 2' }}>
+                                                    {/* Box 1: Agreement */}
+                                                    <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)' }}>
+                                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>المبلغ المتفق عليه</span>
                                                         <span style={{ fontSize: '18px', fontWeight: '800', color: 'white', fontFamily: 'monospace' }}>
-                                                            {Number(activeCustomer.projectCost || 0).toLocaleString()} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
+                                                            {projectCost.toLocaleString()} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
                                                         </span>
                                                     </div>
 
-                                                    <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', background: storedProfit >= 0 ? 'rgba(46, 204, 113, 0.1)' : 'rgba(255, 77, 77, 0.1)', border: storedProfit >= 0 ? '1px solid rgba(46, 204, 113, 0.2)' : '1px solid rgba(255, 77, 77, 0.2)', position: 'relative' }}>
-                                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>صافي الربح</span>
-                                                        <span style={{ fontSize: '18px', fontWeight: '800', color: storedProfit >= 0 ? '#2ecc71' : '#ff4d4d', fontFamily: 'monospace' }}>
-                                                            {storedProfit.toLocaleString()} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
+                                                    {/* Box 2: Net Profit (Conditional) */}
+                                                    <div className="stat-box glass-panel" style={{
+                                                        padding: '15px',
+                                                        borderRadius: '12px',
+                                                        textAlign: 'center',
+                                                        background: isFullyPaid ? 'rgba(46, 204, 113, 0.1)' : 'rgba(255,255,255,0.02)',
+                                                        border: isFullyPaid ? '1px solid #2ecc71' : '1px solid rgba(255,255,255,0.05)',
+                                                    }}>
+                                                        <span style={{ fontSize: '11px', color: isFullyPaid ? '#2ecc71' : 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>صافي الربح</span>
+                                                        <span style={{ fontSize: '18px', fontWeight: '800', color: isFullyPaid ? (netProfitVal >= 0 ? '#2ecc71' : '#ff4d4d') : 'var(--text-dim)', fontFamily: 'monospace' }}>
+                                                            {isFullyPaid ? netProfitVal.toLocaleString() : '---'} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
                                                         </span>
-                                                        {isMismatch && (
-                                                            <button
-                                                                onClick={() => {
-                                                                    if (window.confirm(`يوجد اختلاف بين الرصيد المسجل (${storedProfit}) والرصيد المحسوب من المعاملات (${calculatedProfit}).\nهل تريد تصحيح الرصيد ليكون ${calculatedProfit}؟`)) {
-                                                                        updateCustomer({ ...activeCustomer, balance: calculatedProfit });
-                                                                    }
-                                                                }}
-                                                                title="تصحيح الرصيد (يوجد اختلاف)"
-                                                                style={{
-                                                                    position: 'absolute',
-                                                                    top: '5px',
-                                                                    right: '5px',
-                                                                    background: 'rgba(255, 193, 7, 0.2)',
-                                                                    color: '#ffc107',
-                                                                    border: '1px solid #ffc107',
-                                                                    borderRadius: '50%',
-                                                                    width: '20px',
-                                                                    height: '20px',
-                                                                    display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    justifyContent: 'center',
-                                                                    cursor: 'pointer',
-                                                                    fontSize: '10px'
-                                                                }}
-                                                            >
-                                                                !
-                                                            </button>
+                                                        {!isFullyPaid && projectCost > 0 && (
+                                                            <div style={{ fontSize: '9px', color: 'var(--text-dim)', marginTop: '4px' }}>معلق للسداد</div>
                                                         )}
                                                     </div>
 
+                                                    {/* Box 3: Current Balance (Ledger) */}
+                                                    <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', background: currentBalance >= 0 ? 'rgba(46, 204, 113, 0.05)' : 'rgba(255, 77, 77, 0.05)', border: currentBalance >= 0 ? '1px solid rgba(46, 204, 113, 0.1)' : '1px solid rgba(255, 77, 77, 0.1)', gridColumn: 'span 2' }}>
+                                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>الرصيد (الوضع الحالي)</span>
+                                                        <span style={{ fontSize: '24px', fontWeight: '800', color: currentBalance >= 0 ? '#2ecc71' : '#ff4d4d', fontFamily: 'monospace' }}>
+                                                            {currentBalance.toLocaleString()} <small style={{ fontSize: '12px', fontWeight: 'normal' }}>ج.م</small>
+                                                        </span>
+                                                    </div>
 
-                                                    {/* Row 2: Income and Expenses */}
+                                                    {/* Details Row: Income and Expenses */}
                                                     <div className="stat-box glass-panel" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
-                                                        <span style={{ fontSize: '10px', color: 'var(--text-dim)', display: 'block' }}>إجمالي المدفوعات (من العميل)</span>
+                                                        <span style={{ fontSize: '10px', color: 'var(--text-dim)', display: 'block', marginBottom: '5px' }}>إجمالي المدفوعات (من العميل)</span>
                                                         <span style={{ fontSize: '14px', fontWeight: '700', color: '#2ecc71', fontFamily: 'monospace' }}>
                                                             + {totalIncome.toLocaleString()}
                                                         </span>
                                                     </div>
 
                                                     <div className="stat-box glass-panel" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
-                                                        <span style={{ fontSize: '10px', color: 'var(--text-dim)', display: 'block' }}>إجمالي المصروفات (على المشروع)</span>
+                                                        <span style={{ fontSize: '10px', color: 'var(--text-dim)', display: 'block', marginBottom: '5px' }}>إجمالي المصروفات (على المشروع)</span>
                                                         <span style={{ fontSize: '14px', fontWeight: '700', color: '#ff4d4d', fontFamily: 'monospace' }}>
                                                             - {totalExpenses.toLocaleString()}
                                                         </span>

@@ -33,7 +33,6 @@ import Dashboard from './screens/Dashboard';
 import SettingsScreen from './screens/Settings';
 import Login from './screens/Login';
 import Finance from './screens/Finance';
-import Inspections from './screens/Inspections';
 import InspectionDetails from './screens/InspectionDetails';
 import UserProfile from './screens/UserProfile';
 import Deliveries from './screens/Deliveries';
@@ -67,7 +66,6 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, isMobileMenuOpen, setIsMobileMen
         {perms.canManagePurchases && <NavItem to="/purchasing" icon={ShoppingCart} label="المشتريات" isCollapsed={isCollapsed} />}
 
         {perms.canManageFinance && <NavItem to="/finance" icon={DollarSign} label="المالية" isCollapsed={isCollapsed} />}
-        {perms.canManageInspections && <NavItem to="/inspections" icon={Eye} label="المعاينات" isCollapsed={isCollapsed} />}
         {perms.canManageDeliveries && <NavItem to="/deliveries" icon={Truck} label="التسليمات" isCollapsed={isCollapsed} />}
       </nav>
       <div className="sidebar-footer">
@@ -320,7 +318,6 @@ const AppContent = () => {
 
             <Route path="/deliveries" element={<ProtectedRoute perm={perms.canManageDeliveries}><Deliveries /></ProtectedRoute>} />
             <Route path="/finance" element={<ProtectedRoute perm={perms.canManageFinance}><Finance /></ProtectedRoute>} />
-            <Route path="/inspections" element={<ProtectedRoute perm={perms.canManageInspections}><Inspections /></ProtectedRoute>} />
             <Route path="/inspection/:id" element={<ProtectedRoute perm={perms.canManageInspections}><InspectionDetails /></ProtectedRoute>} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/settings" element={<ProtectedRoute perm={perms.canManageUsers}><SettingsScreen /></ProtectedRoute>} />
