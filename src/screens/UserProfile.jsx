@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 const UserProfile = () => {
-    const { currentUser } = useApp();
+    const { currentUser, darkMode } = useApp();
     const [showPassword, setShowPassword] = useState(false);
     const [isEditingPassword, setIsEditingPassword] = useState(false);
 
@@ -20,27 +20,31 @@ const UserProfile = () => {
     return (
         <div className="page" dir="rtl">
             {/* Hero Section */}
-            <div className="glass" style={{
+            <div className="profile-hero glass" style={{
                 padding: '40px',
                 borderRadius: 'var(--radius-xl)',
                 marginBottom: '32px',
-                background: 'linear-gradient(135deg, hsla(var(--primary-h), 40%, 40%, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                background: darkMode
+                    ? 'linear-gradient(135deg, hsla(var(--primary-h), 40%, 40%, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%)'
+                    : 'linear-gradient(135deg, #fffcf6 0%, #ffffff 100%)',
+                border: darkMode ? '1px solid var(--border-glass)' : '1px solid rgba(var(--primary-rgb), 0.15)',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                boxShadow: darkMode ? 'var(--shadow-premium)' : '0 15px 40px rgba(0,0,0,0.03)'
             }}>
                 <div className="flex-responsive" style={{ position: 'relative', zIndex: 2 }}>
-                    <div className="avatar" style={{
+                    <div className="avatar profile-avatar-large" style={{
                         width: '120px',
                         height: '120px',
                         fontSize: '48px',
                         background: 'var(--primary)',
-                        color: 'black',
+                        color: darkMode ? 'black' : 'white',
                         borderRadius: '24px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontWeight: '700',
-                        boxShadow: '0 20px 60px var(--primary-glow)'
+                        boxShadow: darkMode ? '0 20px 60px var(--primary-glow)' : '0 10px 30px rgba(var(--primary-rgb), 0.3)'
                     }}>
                         {currentUser.name.charAt(0)}
                     </div>
@@ -48,78 +52,92 @@ const UserProfile = () => {
                         <h1 className="text-gradient" style={{ fontSize: '32px', marginBottom: '8px' }}>
                             {currentUser.name}
                         </h1>
-                        <p className="text-secondary" style={{ fontSize: '16px', marginBottom: '16px' }}>
-                            {currentUser.role === 'admin' ? 'مدير نظام' : 'مهندس'} • {currentUser.username}@كينز
+                        <p style={{ fontSize: '16px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
+                            {currentUser.role === 'admin' ? 'مدير نظام' : 'مهندس'} • <span style={{ color: 'var(--primary)', fontWeight: '600' }}>{currentUser.username}@كينز</span>
                         </p>
                         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                            <div className="stat-badge glass" style={{ padding: '8px 16px', borderRadius: '20px' }}>
+                            <div className="stat-badge glass" style={{ padding: '8px 16px', borderRadius: '20px', background: 'var(--bg-glass)', border: '1px solid var(--border-glass)' }}>
                                 <Shield size={16} style={{ color: 'var(--primary)' }} />
-                                <span style={{ fontSize: '13px' }}>
+                                <span style={{ fontSize: '13px', color: 'var(--text-primary)', fontWeight: '600' }}>
                                     {currentUser.status === 'active' ? 'نشط' : 'غير نشط'}
                                 </span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', background: 'var(--primary)', filter: 'blur(100px)', opacity: 0.1 }}></div>
+                {!darkMode && (
+                    <div style={{
+                        position: 'absolute',
+                        top: '-50px',
+                        right: '-50px',
+                        width: '200px',
+                        height: '200px',
+                        background: 'var(--primary)',
+                        filter: 'blur(100px)',
+                        opacity: 0.08
+                    }}></div>
+                )}
             </div>
 
             <div className="grid" style={{ marginBottom: '32px' }}>
                 {/* Personal Information */}
-                <div className="card glass" style={{ padding: '32px', borderRadius: 'var(--radius-lg)' }}>
-                    <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="card glass info-section-card" style={{ padding: '32px', borderRadius: 'var(--radius-lg)', background: 'var(--bg-card-glass)', border: '1px solid var(--border-glass)' }}>
+                    <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)' }}>
                         <User size={20} className="text-primary" />
                         المعلومات الشخصية
                     </h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         <div>
-                            <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px' }}>
+                            <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px', fontWeight: '600' }}>
                                 الاسم الكامل
                             </label>
-                            <div style={{
+                            <div className="info-display-box" style={{
                                 padding: '12px 16px',
-                                background: 'rgba(255,255,255,0.03)',
+                                background: 'var(--bg-glass)',
                                 borderRadius: 'var(--radius-md)',
-                                border: '1px solid var(--border-glass)',
-                                color: 'white'
+                                border: '1.5px solid var(--status-connector)',
+                                color: 'var(--text-primary)',
+                                fontWeight: '500'
                             }}>
                                 {currentUser.name}
                             </div>
                         </div>
                         <div>
-                            <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px' }}>
+                            <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px', fontWeight: '600' }}>
                                 اسم المستخدم
                             </label>
-                            <div style={{
+                            <div className="info-display-box" style={{
                                 padding: '12px 16px',
-                                background: 'rgba(255,255,255,0.03)',
+                                background: 'var(--bg-glass)',
                                 borderRadius: 'var(--radius-md)',
-                                border: '1px solid var(--border-glass)',
-                                color: 'white',
+                                border: '1.5px solid var(--status-connector)',
+                                color: 'var(--text-primary)',
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '8px'
+                                gap: '8px',
+                                fontWeight: '500'
                             }}>
-                                <User size={16} className="text-secondary" />
+                                <User size={16} style={{ color: 'var(--primary)' }} />
                                 {currentUser.username}
                             </div>
                         </div>
                         {currentUser.email && (
                             <div>
-                                <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px' }}>
+                                <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px', fontWeight: '600' }}>
                                     البريد الإلكتروني
                                 </label>
-                                <div style={{
+                                <div className="info-display-box" style={{
                                     padding: '12px 16px',
-                                    background: 'rgba(255,255,255,0.03)',
+                                    background: 'var(--bg-glass)',
                                     borderRadius: 'var(--radius-md)',
-                                    border: '1px solid var(--border-glass)',
-                                    color: 'white',
+                                    border: '1.5px solid var(--status-connector)',
+                                    color: 'var(--text-primary)',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    gap: '8px'
+                                    gap: '8px',
+                                    fontWeight: '500'
                                 }}>
-                                    <Mail size={16} className="text-secondary" />
+                                    <Mail size={16} style={{ color: 'var(--primary)' }} />
                                     {currentUser.email}
                                 </div>
                             </div>
@@ -128,8 +146,8 @@ const UserProfile = () => {
                 </div>
 
                 {/* User Permissions */}
-                <div className="card glass" style={{ padding: '32px', borderRadius: 'var(--radius-lg)' }}>
-                    <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div className="card glass info-section-card" style={{ padding: '32px', borderRadius: 'var(--radius-lg)', background: 'var(--bg-card-glass)', border: '1px solid var(--border-glass)' }}>
+                    <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)' }}>
                         <Shield size={20} className="text-primary" />
                         الصلاحيات الممنوحة
                     </h2>
@@ -150,29 +168,30 @@ const UserProfile = () => {
                             return (
                                 <div
                                     key={key}
+                                    className={`permission-item ${value ? 'active' : ''}`}
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '12px',
                                         padding: '10px 12px',
-                                        background: value ? 'rgba(var(--primary-rgb), 0.1)' : 'rgba(255,255,255,0.02)',
+                                        background: value ? 'rgba(var(--primary-rgb), 0.08)' : 'var(--bg-glass)',
                                         borderRadius: 'var(--radius-md)',
-                                        border: `1px solid ${value ? 'var(--border-active)' : 'var(--border-glass)'}`,
-                                        opacity: value ? 1 : 0.5
+                                        border: `1.5px solid ${value ? 'var(--border-active)' : 'var(--status-connector)'}`,
+                                        opacity: value ? 1 : 0.6
                                     }}
                                 >
                                     <div style={{
                                         width: '20px',
                                         height: '20px',
                                         borderRadius: '6px',
-                                        background: value ? 'var(--primary)' : 'rgba(255,255,255,0.1)',
+                                        background: value ? 'var(--primary)' : 'var(--status-connector)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center'
                                     }}>
-                                        {value && <Check size={14} style={{ color: 'black' }} />}
+                                        {value && <Check size={14} style={{ color: darkMode ? 'black' : 'white' }} />}
                                     </div>
-                                    <span style={{ fontSize: '13px', color: value ? 'white' : 'var(--text-secondary)' }}>
+                                    <span style={{ fontSize: '13px', color: value ? 'var(--text-primary)' : 'var(--text-muted)', fontWeight: value ? '700' : 'normal' }}>
                                         {permissionLabels[key] || key}
                                     </span>
                                 </div>
@@ -183,36 +202,38 @@ const UserProfile = () => {
             </div>
 
             {/* Security Settings */}
-            <div className="card glass" style={{ padding: '32px', borderRadius: 'var(--radius-lg)' }}>
-                <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div className="card glass info-section-card" style={{ padding: '32px', borderRadius: 'var(--radius-lg)', background: 'var(--bg-card-glass)', border: '1px solid var(--border-glass)' }}>
+                <h2 style={{ fontSize: '20px', fontWeight: '700', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', color: 'var(--text-primary)' }}>
                     <Lock size={20} className="text-primary" />
                     الأمان وكلمة المرور
                 </h2>
                 <div style={{ maxWidth: '600px' }}>
                     <div style={{ marginBottom: '20px' }}>
-                        <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px' }}>
+                        <label className="text-secondary" style={{ fontSize: '12px', display: 'block', marginBottom: '8px', fontWeight: '600' }}>
                             كلمة المرور الحالية
                         </label>
-                        <div style={{
+                        <div className="info-display-box" style={{
                             padding: '12px 16px',
-                            background: 'rgba(255,255,255,0.03)',
+                            background: 'var(--bg-glass)',
                             borderRadius: 'var(--radius-md)',
-                            border: '1px solid var(--border-glass)',
-                            color: 'white',
+                            border: '1.5px solid var(--status-connector)',
+                            color: 'var(--text-primary)',
                             display: 'flex',
                             alignItems: 'center',
-                            justifyContent: 'space-between'
+                            justifyContent: 'space-between',
+                            fontWeight: '500'
                         }}>
-                            <span>{showPassword ? currentUser.password : '••••••••'}</span>
+                            <span style={{ letterSpacing: showPassword ? '0' : '4px' }}>{showPassword ? currentUser.password : '••••••••'}</span>
                             <button
                                 onClick={() => setShowPassword(!showPassword)}
                                 style={{
                                     background: 'transparent',
                                     border: 'none',
                                     cursor: 'pointer',
-                                    color: 'var(--text-secondary)',
+                                    color: 'var(--primary)',
                                     display: 'flex',
-                                    alignItems: 'center'
+                                    alignItems: 'center',
+                                    padding: '4px'
                                 }}
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -225,25 +246,60 @@ const UserProfile = () => {
                         style={{
                             padding: '12px 24px',
                             background: 'var(--primary)',
-                            color: 'black',
+                            color: 'white',
                             border: 'none',
                             borderRadius: 'var(--radius-md)',
-                            fontWeight: '600',
+                            fontWeight: '700',
                             cursor: 'pointer',
-                            fontSize: '14px'
+                            fontSize: '14px',
+                            boxShadow: '0 4px 15px rgba(var(--primary-rgb), 0.2)'
                         }}
                     >
                         {isEditingPassword ? 'إلغاء' : 'تغيير كلمة المرور'}
                     </button>
                     {isEditingPassword && (
-                        <div style={{ marginTop: '20px', padding: '20px', background: 'rgba(255,255,255,0.02)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-glass)' }}>
-                            <p className="text-secondary" style={{ fontSize: '13px', marginBottom: '12px' }}>
-                                لتغيير كلمة المرور، يرجى التواصل مع مدير النظام.
+                        <div style={{ marginTop: '20px', padding: '20px', background: 'rgba(var(--primary-rgb), 0.05)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border-active)' }}>
+                            <p className="text-primary" style={{ fontSize: '13px', fontWeight: '600' }}>
+                                لتغيير كلمة المرور، يرجى التواصل مع مدير النظام لتأمين حسابك بشكل كامل.
                             </p>
                         </div>
                     )}
                 </div>
             </div>
+
+            <style>{`
+                .light-theme .profile-hero {
+                    background: linear-gradient(135deg, #fffcf6 0%, #ffffff 100%) !important;
+                    border-color: rgba(var(--primary-rgb), 0.2) !important;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.02) !important;
+                }
+                .light-theme .info-section-card {
+                    background: #ffffff !important;
+                    border-color: #f1f5f9 !important;
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.02) !important;
+                }
+                .light-theme .info-display-box {
+                    background: #f8fafc !important;
+                    border-color: #e2e8f0 !important;
+                    color: #1e293b !important;
+                }
+                .light-theme .permission-item {
+                    background: #f8fafc !important;
+                    border-color: #e2e8f0 !important;
+                }
+                .light-theme .permission-item.active {
+                    background: #fffcf0 !important;
+                    border-color: var(--primary) !important;
+                }
+                .light-theme .avatar {
+                    color: white !important;
+                    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                .light-theme .stat-badge {
+                    background: #ffffff !important;
+                    border-color: #f1f5f9 !important;
+                }
+            `}</style>
         </div>
     );
 };

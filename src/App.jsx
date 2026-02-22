@@ -191,7 +191,7 @@ const AppContent = () => {
                   placeholder="ابحث بذكاء عن عميل، عقد، أو فاتورة..."
                   value={globalSearch}
                   onChange={(e) => setGlobalSearch(e.target.value)}
-                  style={{ background: 'transparent', border: 'none', color: 'white', outline: 'none', width: '100%', fontSize: '14px' }}
+                  style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', outline: 'none', width: '100%', fontSize: '14px' }}
                 />
                 <div style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 8px', borderRadius: '6px', fontSize: '10px', color: 'var(--text-secondary)' }}>
                   <Command size={10} style={{ marginLeft: '4px' }} /> K
@@ -223,7 +223,7 @@ const AppContent = () => {
                         padding: '12px',
                         borderRadius: 'var(--radius-md)',
                         textDecoration: 'none',
-                        color: 'white',
+                        color: 'var(--text-primary)',
                         transition: 'all 0.2s'
                       }}
                     >
@@ -256,7 +256,7 @@ const AppContent = () => {
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               >
                 <div style={{ textAlign: 'left', marginLeft: '12px' }}>
-                  <span style={{ display: 'block', fontSize: '13px', fontWeight: '700' }}>{currentUser.name || currentUser.username}</span>
+                  <span style={{ display: 'block', fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)' }}>{currentUser.name || currentUser.username}</span>
                   <span className="text-secondary" style={{ fontSize: '10px' }}>{currentUser.role === 'admin' ? 'مدير نظام' : 'مهندس'}</span>
                 </div>
                 <div className="avatar">{(currentUser.name || currentUser.username || '?').charAt(0)}</div>
@@ -267,21 +267,23 @@ const AppContent = () => {
                   position: 'absolute',
                   top: '120%',
                   left: 0,
-                  minWidth: '200px',
+                  minWidth: '220px',
                   zIndex: 200,
                   borderRadius: 'var(--radius-md)',
-                  padding: '8px',
+                  padding: '12px',
                   animation: 'slideDown 0.3s ease',
-                  background: 'rgba(23, 23, 25, 0.95)'
+                  background: 'var(--bg-surface)',
+                  border: '1px solid var(--border-glass)',
+                  boxShadow: 'var(--shadow-premium)'
                 }}>
                   <div style={{ padding: '12px', borderBottom: '1px solid var(--border-glass)', marginBottom: '8px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: '600', color: 'white' }}>{currentUser.name}</div>
-                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>{currentUser.username} @ كينز</div>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-primary)' }}>{currentUser.name}</div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>{currentUser.username} @ كينز</div>
                   </div>
 
-                  <Link to="/profile" className="dropdown-item" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', textDecoration: 'none', color: 'var(--text-secondary)', transition: 'all 0.2s' }}>
-                    <Settings size={16} />
-                    <span style={{ fontSize: '13px' }}>إعدادات الحساب</span>
+                  <Link to="/profile" className="dropdown-item" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', borderRadius: '8px', textDecoration: 'none', color: 'var(--text-primary)', transition: 'all 0.2s' }}>
+                    <Settings size={16} style={{ color: 'var(--primary)' }} />
+                    <span style={{ fontSize: '13px', fontWeight: '500' }}>إعدادات الحساب</span>
                   </Link>
 
                   <button
@@ -298,11 +300,12 @@ const AppContent = () => {
                       background: 'transparent',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
-                      marginTop: '4px'
+                      marginTop: '4px',
+                      color: '#ff4d4d'
                     }}
                   >
                     <LogOut size={16} />
-                    <span style={{ fontSize: '13px' }}>تسجيل الخروج</span>
+                    <span style={{ fontSize: '13px', fontWeight: '600' }}>تسجيل الخروج</span>
                   </button>
                 </div>
               )}

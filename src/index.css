@@ -29,6 +29,13 @@
 
   --shadow-premium: 0 20px 40px rgba(0, 0, 0, 0.4);
   --glass-blur: blur(12px);
+
+  /* Status Stepper & Action Colors (Dark) */
+  --status-circle-bg: #1a1a1a;
+  --status-connector: rgba(255, 255, 255, 0.1);
+  --action-purple-bg: rgba(155, 89, 182, 0.15);
+  --action-green-bg: rgba(46, 204, 113, 0.15);
+  --action-orange-bg: rgba(230, 126, 34, 0.15);
 }
 
 .light-theme {
@@ -36,21 +43,28 @@
   --bg-main: #fdfdfd;
   --bg-surface: #ffffff;
   --bg-glass: rgba(255, 255, 255, 0.85);
-  
+
   --text-primary: #1a1a1a;
   --text-secondary: #57606f;
   --text-muted: #a4b0be;
   --text-dim: #747d8c;
-  
+
   --border-glass: rgba(0, 0, 0, 0.06);
   --border-active: hsla(var(--primary-h), var(--primary-s), var(--primary-l), 0.5);
-  
+
   --shadow-premium: 0 15px 35px rgba(0, 0, 0, 0.04);
   --glass-blur: blur(20px);
+
+  /* Status Stepper & Action Colors (Light) */
+  --status-circle-bg: #f1f5f9;
+  --status-connector: #e2e8f0;
+  --action-purple-bg: #f3f0ff;
+  --action-green-bg: #f0fff4;
+  --action-orange-bg: #fff8ee;
 }
 
 .light-theme::before {
-  background: 
+  background:
     radial-gradient(circle at 10% 10%, hsla(var(--primary-h), 60%, 92%, 0.5) 0%, transparent 50%),
     radial-gradient(circle at 90% 90%, hsla(210, 30%, 95%, 0.5) 0%, transparent 50%);
   opacity: 1;
@@ -69,7 +83,11 @@
   transform: translateY(-3px);
 }
 
-.light-theme h1, .light-theme h2, .light-theme h3, .light-theme h4, .light-theme h5 {
+.light-theme h1,
+.light-theme h2,
+.light-theme h3,
+.light-theme h4,
+.light-theme h5 {
   color: #1a1a1a;
   letter-spacing: -0.02em;
 }

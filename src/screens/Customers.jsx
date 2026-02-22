@@ -306,8 +306,8 @@ const Customers = () => {
                     <h2>إدارة العملاء</h2>
                 </div>
                 <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                    <button className="btn-premium" onClick={handleExport} style={{ border: '1px solid rgba(46, 204, 113, 0.2)' }}>
-                        <div className="icon-wrapper-premium" style={{ background: 'rgba(46, 204, 113, 0.15)', color: '#2ecc71' }}>
+                    <button className="btn-premium" onClick={handleExport}>
+                        <div className="icon-wrapper-premium" style={{ background: 'var(--action-green-bg)', color: '#2ecc71' }}>
                             <FileSpreadsheet size={20} />
                         </div>
                         <div className="content-premium">
@@ -340,7 +340,7 @@ const Customers = () => {
                         placeholder="البحث باسم العميل أو رقم الهاتف..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        style={{ background: 'transparent', border: 'none', color: 'white', width: '100%', padding: '12px 10px', outline: 'none' }}
+                        style={{ background: 'transparent', border: 'none', color: 'inherit', width: '100%', padding: '12px 10px', outline: 'none' }}
                     />
                 </div>
 
@@ -399,32 +399,32 @@ const Customers = () => {
                                     return (
                                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginTop: '15px' }}>
                                             {/* Box 1: Agreed */}
-                                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.03)', borderRadius: '10px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                            <div className="stat-box" style={{ padding: '8px', background: 'var(--bg-surface)', borderRadius: '10px', textAlign: 'center', border: '1.5px solid var(--status-connector)' }}>
                                                 <span style={{ fontSize: '9px', color: 'var(--text-secondary)', display: 'block' }}>المبلغ المتفق عليه</span>
-                                                <span style={{ fontWeight: '700', color: 'white', fontSize: '13px' }}>{cProjectCost.toLocaleString()}</span>
+                                                <span style={{ fontWeight: '700', color: 'var(--text-primary)', fontSize: '13px' }}>{cProjectCost.toLocaleString()}</span>
                                             </div>
 
                                             {/* Box 2: Net Profit */}
-                                            <div style={{
+                                            <div className="stat-box" style={{
                                                 padding: '8px',
-                                                background: isPaid ? 'rgba(46, 204, 113, 0.08)' : 'rgba(255,255,255,0.03)',
+                                                background: isPaid ? (cNetProfit >= 0 ? 'rgba(70, 174, 92, 0.08)' : 'rgba(255, 77, 77, 0.08)') : 'var(--bg-surface)',
                                                 borderRadius: '10px',
                                                 textAlign: 'center',
-                                                border: isPaid ? '1px solid rgba(46, 204, 113, 0.2)' : '1px solid rgba(255,255,255,0.05)'
+                                                border: isPaid ? (cNetProfit >= 0 ? '1.5px solid rgba(70, 174, 92, 0.3)' : '1.5px solid rgba(255, 77, 77, 0.3)') : '1.5px solid var(--status-connector)'
                                             }}>
-                                                <span style={{ fontSize: '9px', color: isPaid ? '#2ecc71' : 'var(--text-secondary)', display: 'block' }}>صافي الربح</span>
+                                                <span style={{ fontSize: '9px', color: isPaid ? (cNetProfit >= 0 ? '#2ecc71' : '#ff4d4d') : 'var(--text-secondary)', display: 'block' }}>صافي الربح</span>
                                                 <span style={{ fontWeight: '700', color: isPaid ? (cNetProfit >= 0 ? '#2ecc71' : '#ff4d4d') : 'var(--text-dim)', fontSize: '13px' }}>
                                                     {isPaid ? cNetProfit.toLocaleString() : '---'}
                                                 </span>
                                             </div>
 
                                             {/* Box 3: Current Balance (Full Width) */}
-                                            <div style={{
+                                            <div className="stat-box balance-status-box" style={{
                                                 padding: '10px',
-                                                background: cBalance >= 0 ? 'rgba(46, 204, 113, 0.05)' : 'rgba(255, 77, 77, 0.05)',
+                                                background: cBalance >= 0 ? 'rgba(70, 174, 92, 0.05)' : 'rgba(255, 77, 77, 0.05)',
                                                 borderRadius: '10px',
                                                 textAlign: 'center',
-                                                border: cBalance >= 0 ? '1px solid rgba(46, 204, 113, 0.1)' : '1px solid rgba(255, 77, 77, 0.1)',
+                                                border: cBalance >= 0 ? '1.5px solid rgba(70, 174, 92, 0.15)' : '1.5px solid rgba(255, 77, 77, 0.15)',
                                                 gridColumn: 'span 2'
                                             }}>
                                                 <span style={{ fontSize: '9px', color: 'var(--text-secondary)', display: 'block' }}>الرصيد (الوضع الحالي)</span>
@@ -434,11 +434,11 @@ const Customers = () => {
                                             </div>
 
                                             {/* Row 3: Mixed small stats */}
-                                            <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', padding: '5px' }}>
+                                            <div className="stat-box" style={{ textAlign: 'center', background: 'var(--bg-surface)', borderRadius: '8px', padding: '5px', border: '1.5px solid var(--status-connector)' }}>
                                                 <span style={{ fontSize: '8px', color: 'var(--text-dim)', display: 'block' }}>إجمالي المدفوعات</span>
                                                 <span style={{ fontSize: '10px', color: '#2ecc71', fontWeight: 'bold' }}>+{cIncome.toLocaleString()}</span>
                                             </div>
-                                            <div style={{ textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', padding: '5px' }}>
+                                            <div className="stat-box" style={{ textAlign: 'center', background: 'var(--bg-surface)', borderRadius: '8px', padding: '5px', border: '1.5px solid var(--status-connector)' }}>
                                                 <span style={{ fontSize: '8px', color: 'var(--text-dim)', display: 'block' }}>إجمالي المصروفات</span>
                                                 <span style={{ fontSize: '10px', color: '#ff4d4d', fontWeight: 'bold' }}>-{cExpenses.toLocaleString()}</span>
                                             </div>
@@ -577,7 +577,7 @@ const Customers = () => {
                                             <h4 style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '15px' }}>مراحل المشروع</h4>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', position: 'relative' }}>
                                                 {/* Progress Line */}
-                                                <div style={{ position: 'absolute', top: '12px', left: '0', right: '0', height: '2px', background: 'rgba(255,255,255,0.1)', zIndex: 0 }}></div>
+                                                <div style={{ position: 'absolute', top: '12px', left: '0', right: '0', height: '2px', background: 'var(--status-connector)', zIndex: 0 }}></div>
                                                 <div style={{
                                                     position: 'absolute', top: '12px', right: '0', height: '2px', background: 'var(--primary)', zIndex: 0,
                                                     width: activeCustomer.status === 'delivered' ? '100%' :
@@ -608,8 +608,8 @@ const Customers = () => {
                                                         >
                                                             <div style={{
                                                                 width: '32px', height: '32px', borderRadius: '50%',
-                                                                background: isActive ? 'var(--primary)' : '#1a1a1a',
-                                                                border: isCurrent ? '2px solid white' : `2px solid ${isActive ? 'var(--primary)' : 'rgba(255,255,255,0.1)'}`,
+                                                                background: isActive ? 'var(--primary)' : 'var(--status-circle-bg)',
+                                                                border: isCurrent ? '2px solid white' : `2px solid ${isActive ? 'var(--primary)' : 'var(--status-connector)'}`,
                                                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                                 color: isActive ? 'white' : 'var(--text-dim)',
                                                                 transition: 'all 0.3s ease',
@@ -617,7 +617,7 @@ const Customers = () => {
                                                             }}>
                                                                 {step.icon}
                                                             </div>
-                                                            <span style={{ fontSize: '11px', color: isActive ? 'white' : 'var(--text-dim)', fontWeight: isActive ? 'bold' : 'normal' }}>{step.label}</span>
+                                                            <span style={{ fontSize: '11px', color: isActive ? 'var(--text-primary)' : 'var(--text-dim)', fontWeight: isActive ? 'bold' : 'normal' }}>{step.label}</span>
                                                         </div>
                                                     );
                                                 })}
@@ -643,64 +643,81 @@ const Customers = () => {
                                             return (
                                                 <div className="stats-grid-modern" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px', marginTop: '15px', gridColumn: 'span 2' }}>
                                                     {/* Box 1: Agreement */}
-                                                    <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)', background: 'rgba(255,255,255,0.02)' }}>
+                                                    <div className="stat-box" style={{
+                                                        padding: '15px',
+                                                        borderRadius: '12px',
+                                                        textAlign: 'center',
+                                                        border: '2px solid #d1d5db',
+                                                        background: 'var(--bg-surface)',
+                                                        boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
+                                                    }}>
                                                         <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>المبلغ المتفق عليه</span>
-                                                        <span style={{ fontSize: '18px', fontWeight: '800', color: 'white', fontFamily: 'monospace' }}>
+                                                        <span style={{ fontSize: '18px', fontWeight: '800', color: 'var(--text-primary)', fontFamily: 'monospace' }}>
                                                             {projectCost.toLocaleString()} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
                                                         </span>
                                                     </div>
 
                                                     {/* Box 2: Net Profit (Conditional) */}
-                                                    <div className="stat-box glass-panel" style={{
+                                                    <div className="stat-box" style={{
                                                         padding: '15px',
                                                         borderRadius: '12px',
                                                         textAlign: 'center',
-                                                        background: isFullyPaid ? 'rgba(46, 204, 113, 0.1)' : 'rgba(255,255,255,0.02)',
-                                                        border: isFullyPaid ? '1px solid #2ecc71' : '1px solid rgba(255,255,255,0.05)',
+                                                        background: isFullyPaid ? (netProfitVal >= 0 ? 'rgba(70, 174, 92, 0.08)' : 'rgba(255, 77, 77, 0.08)') : 'var(--bg-surface)',
+                                                        border: isFullyPaid ? (netProfitVal >= 0 ? '2px solid rgba(70, 174, 92, 0.4)' : '2px solid rgba(255, 77, 77, 0.4)') : '2px solid #d1d5db',
+                                                        boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
                                                     }}>
-                                                        <span style={{ fontSize: '11px', color: isFullyPaid ? '#2ecc71' : 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>صافي الربح</span>
-                                                        <span style={{ fontSize: '18px', fontWeight: '800', color: isFullyPaid ? (netProfitVal >= 0 ? '#2ecc71' : '#ff4d4d') : 'var(--text-dim)', fontFamily: 'monospace' }}>
+                                                        <span style={{ fontSize: '11px', color: isFullyPaid ? (netProfitVal >= 0 ? '#46ae5c' : '#ff4d4d') : 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>صافي الربح</span>
+                                                        <span style={{ fontSize: '18px', fontWeight: '800', color: isFullyPaid ? (netProfitVal >= 0 ? '#46ae5c' : '#ff4d4d') : 'var(--text-muted)', fontFamily: 'monospace' }}>
                                                             {isFullyPaid ? netProfitVal.toLocaleString() : '---'} <small style={{ fontSize: '10px', fontWeight: 'normal' }}>ج.م</small>
                                                         </span>
                                                         {!isFullyPaid && projectCost > 0 && (
-                                                            <div style={{ fontSize: '9px', color: 'var(--text-dim)', marginTop: '4px' }}>معلق للسداد</div>
+                                                            <div style={{ fontSize: '9px', color: 'var(--text-muted)', marginTop: '4px' }}>معلق للسداد</div>
                                                         )}
                                                     </div>
 
                                                     {/* Box 3: Current Balance (Ledger) */}
-                                                    <div className="stat-box glass-panel" style={{ padding: '15px', borderRadius: '12px', textAlign: 'center', background: currentBalance >= 0 ? 'rgba(46, 204, 113, 0.05)' : 'rgba(255, 77, 77, 0.05)', border: currentBalance >= 0 ? '1px solid rgba(46, 204, 113, 0.1)' : '1px solid rgba(255, 77, 77, 0.1)', gridColumn: 'span 2' }}>
-                                                        <span style={{ fontSize: '11px', color: 'var(--text-secondary)', display: 'block', marginBottom: '5px' }}>الرصيد (الوضع الحالي)</span>
-                                                        <span style={{ fontSize: '24px', fontWeight: '800', color: currentBalance >= 0 ? '#2ecc71' : '#ff4d4d', fontFamily: 'monospace' }}>
-                                                            {currentBalance.toLocaleString()} <small style={{ fontSize: '12px', fontWeight: 'normal' }}>ج.م</small>
+                                                    <div className="stat-box glass-panel balance-status-box" style={{
+                                                        padding: '20px 15px',
+                                                        borderRadius: '16px',
+                                                        textAlign: 'center',
+                                                        background: currentBalance >= 0 ? 'rgba(70, 174, 92, 0.05)' : 'rgba(255, 77, 77, 0.05)',
+                                                        border: currentBalance >= 0 ? '2px solid rgba(70, 174, 92, 0.25)' : '2px solid rgba(255, 77, 77, 0.25)',
+                                                        gridColumn: 'span 2',
+                                                        boxShadow: currentBalance >= 0 ? '0 10px 30px rgba(70, 174, 76, 0.05)' : '0 10px 30px rgba(255, 77, 77, 0.05)'
+                                                    }}>
+                                                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)', display: 'block', marginBottom: '8px', fontWeight: '600' }}>الرصيد (الوضع الحالي)</span>
+                                                        <span style={{ fontSize: '28px', fontWeight: '900', color: currentBalance >= 0 ? '#46ae5c' : '#ff4d4d', fontFamily: 'monospace', letterSpacing: '1px' }}>
+                                                            {currentBalance.toLocaleString()} <small style={{ fontSize: '14px', fontWeight: 'normal' }}>ج.م</small>
                                                         </span>
                                                     </div>
 
                                                     {/* Details Row: Income and Expenses */}
-                                                    <div className="stat-box glass-panel" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
-                                                        <span style={{ fontSize: '10px', color: 'var(--text-dim)', display: 'block', marginBottom: '5px' }}>إجمالي المدفوعات (من العميل)</span>
-                                                        <span style={{ fontSize: '14px', fontWeight: '700', color: '#2ecc71', fontFamily: 'monospace' }}>
+                                                    <div className="stat-box" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center', background: 'var(--bg-surface)', border: '2px solid #d1d5db' }}>
+                                                        <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', marginBottom: '5px' }}>إجمالي المدفوعات (من العميل)</span>
+                                                        <span style={{ fontSize: '14px', fontWeight: '800', color: '#46ae5c', fontFamily: 'monospace' }}>
                                                             + {totalIncome.toLocaleString()}
                                                         </span>
                                                     </div>
 
-                                                    <div className="stat-box glass-panel" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center', background: 'rgba(255,255,255,0.02)' }}>
-                                                        <span style={{ fontSize: '10px', color: 'var(--text-dim)', display: 'block', marginBottom: '5px' }}>إجمالي المصروفات (على المشروع)</span>
-                                                        <span style={{ fontSize: '14px', fontWeight: '700', color: '#ff4d4d', fontFamily: 'monospace' }}>
+                                                    <div className="stat-box" style={{ padding: '12px', borderRadius: '12px', textAlign: 'center', background: 'var(--bg-surface)', border: '2px solid #d1d5db' }}>
+                                                        <span style={{ fontSize: '10px', color: 'var(--text-muted)', display: 'block', marginBottom: '5px' }}>إجمالي المصروفات (على المشروع)</span>
+                                                        <span style={{ fontSize: '14px', fontWeight: '800', color: '#ff4d4d', fontFamily: 'monospace' }}>
                                                             - {totalExpenses.toLocaleString()}
                                                         </span>
                                                     </div>
                                                 </div>
                                             );
                                         })()}
+
                                         <div style={{ marginTop: '20px', gridColumn: 'span 2' }}>
                                             <h4 style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '10px' }}>إجراءات سريعة</h4>
                                             <div className="quick-actions-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', width: '100%' }}>
                                                 <button
                                                     className="action-card glass-interactive"
                                                     onClick={() => { setShowPurchaseModal(true); }}
-                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '20px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: 'white', transition: 'all 0.2s', width: '100%' }}
+                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '20px', borderRadius: '12px', background: 'var(--bg-glass)', border: '1px solid var(--border-glass)', color: 'var(--text-primary)', transition: 'all 0.2s', width: '100%' }}
                                                 >
-                                                    <div style={{ background: 'rgba(230, 126, 34, 0.15)', padding: '10px', borderRadius: '50%', color: '#e67e22', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <div style={{ background: 'var(--action-orange-bg)', padding: '10px', borderRadius: '50%', color: '#e67e22', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                         <ShoppingCart size={20} />
                                                     </div>
                                                     <span style={{ fontSize: '12px', fontWeight: '600' }}>تسجيل مصروفات</span>
@@ -708,9 +725,9 @@ const Customers = () => {
                                                 <button
                                                     className="action-card glass-interactive"
                                                     onClick={() => { setShowPaymentModal(true); }}
-                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '20px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: 'white', transition: 'all 0.2s', width: '100%' }}
+                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '20px', borderRadius: '12px', background: 'var(--bg-glass)', border: '1px solid var(--border-glass)', color: 'var(--text-primary)', transition: 'all 0.2s', width: '100%' }}
                                                 >
-                                                    <div style={{ background: 'rgba(46, 204, 113, 0.15)', padding: '10px', borderRadius: '50%', color: '#2ecc71', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <div style={{ background: 'var(--action-green-bg)', padding: '10px', borderRadius: '50%', color: '#2ecc71', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                         <DollarSign size={20} />
                                                     </div>
                                                     <span style={{ fontSize: '12px', fontWeight: '600' }}>تحصيل دفعة</span>
@@ -718,9 +735,9 @@ const Customers = () => {
                                                 <button
                                                     className="action-card glass-interactive"
                                                     onClick={() => handleAddInspection(selectedCustomer, 'kitchen')}
-                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '20px', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', color: 'white', transition: 'all 0.2s', width: '100%' }}
+                                                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px', padding: '20px', borderRadius: '12px', background: 'var(--bg-glass)', border: '1px solid var(--border-glass)', color: 'var(--text-primary)', transition: 'all 0.2s', width: '100%' }}
                                                 >
-                                                    <div style={{ background: 'rgba(155, 89, 182, 0.15)', padding: '10px', borderRadius: '50%', color: '#9b59b6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <div style={{ background: 'var(--action-purple-bg)', padding: '10px', borderRadius: '50%', color: '#9b59b6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                         <Search size={20} />
                                                     </div>
                                                     <span style={{ fontSize: '12px', fontWeight: '600' }}>حجز معاينة</span>
@@ -1532,9 +1549,10 @@ const Customers = () => {
                     color: var(--text-secondary);
                 }
 
-                :root {
-                    --primary-rgb: 70, 174, 76;
-                }
+                .icon-details { color: var(--primary); opacity: 0.9; }
+                .icon-edit { color: #ffaa00; opacity: 0.9; }
+                .icon-delete { color: #ff4d4d; opacity: 0.9; }
+
                 .customer-actions-modern {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
@@ -1695,7 +1713,117 @@ const Customers = () => {
                     font-weight: 800;
                     box-shadow: 0 8px 20px rgba(var(--primary-rgb), 0.3);
                 }
+
+                /* Light Theme Specific Refinements */
+                .light-theme .customer-details-modal {
+                    background: #ffffff !important;
+                    border: 1px solid rgba(var(--primary-rgb), 0.2) !important;
+                    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.08) !important;
+                }
                 
+                .light-theme .customer-avatar-large {
+                    background: #fff8ee;
+                    color: var(--primary);
+                    border: 2px solid rgba(var(--primary-rgb), 0.2);
+                    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.1);
+                }
+
+                .light-theme .tab-btn {
+                    color: #64748b;
+                }
+                .light-theme .tab-btn:hover {
+                    background: #f1f5f9;
+                    color: #0f172a;
+                }
+                .light-theme .customer-tabs {
+                    background: #f8fafc;
+                    border-color: #e2e8f0;
+                }
+
+                .light-theme .info-item {
+                    background: #ffffff;
+                    border-color: #f1f5f9;
+                }
+                .light-theme .info-item p {
+                    color: #1e293b;
+                }
+
+                .light-theme .action-card {
+                    background: #ffffff;
+                    border-color: #f1f5f9;
+                    color: #1e293b;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+                }
+                .light-theme .action-card:hover {
+                    border-color: var(--primary);
+                    background: #fff8ee;
+                }
+
+                .light-theme .history-item-modern {
+                    background: #ffffff;
+                    border-color: #f1f5f9;
+                }
+                .light-theme .item-title { color: #1e293b; }
+
+                .light-theme .btn-icon-bg {
+                    background: #f8fafc;
+                    border: 1px solid #e2e8f0;
+                    color: var(--primary);
+                }
+                .light-theme .btn-icon-bg:hover {
+                    background: #fff8ee;
+                    border-color: var(--primary);
+                }
+                .light-theme .btn-icon-bg.delete-btn {
+                    background: #fff5f5;
+                    border-color: #ffe3e3;
+                    color: #ff4d4d;
+                }
+                .light-theme .btn-icon-bg.delete-btn:hover {
+                    background: #ffeded;
+                    border-color: #ff4d4d;
+                }
+
+                .light-theme .icon-details { color: var(--primary); }
+                .light-theme .icon-edit { color: #d4a017; }
+                .light-theme .icon-delete { color: #ff4d4d; }
+                
+                .light-theme .customer-actions-modern {
+                    background: #fcfcfc;
+                    border-top-color: #f1f5f9;
+                }
+                .light-theme .customer-actions-modern button {
+                    background: #ffffff;
+                    border-color: #f1f5f9;
+                    color: #475569;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+                }
+                .light-theme .customer-actions-modern button span { color: #1e293b; }
+                .light-theme .customer-actions-modern .view-btn:hover {
+                    background: #fff8ee;
+                    border-color: var(--primary);
+                    color: var(--primary);
+                }
+                .light-theme .customer-actions-modern .delete-btn:hover {
+                    background: #fff5f5;
+                    border-color: #ff4d4d;
+                    color: #ff4d4d;
+                }
+
+                .light-theme .stat-box {
+                    background: #ffffff !important;
+                    border: 2px solid #94a3b8 !important; /* Steel Blue Gray - Very Visible */
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+                }
+                .light-theme .balance-status-box {
+                    background: #fffafa !important; /* Extremely soft red background */
+                    border: 2.5px solid #fecaca !important;
+                }
+                .light-theme .balance-status-box[style*="rgba(70, 174, 92"] {
+                    background: #f0fdf4 !important; /* Extremely soft green background */
+                    border-color: #bbf7d0 !important;
+                }
+
                 /* Hide spinners for number inputs */
                 .no-spinner::-webkit-inner-spin-button,
                 .no-spinner::-webkit-outer-spin-button {
@@ -1706,47 +1834,49 @@ const Customers = () => {
                     -moz-appearance: textfield;
                 }
             `}</style>
-            {showPreviewModal && previewFile && (
-                <div className="modal-overlay" style={{ zIndex: 1200 }} onClick={() => setShowPreviewModal(false)}>
-                    <div className="modal glass preview-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '95vh', width: '900px', display: 'flex', flexDirection: 'column' }}>
-                        <div className="modal-header">
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <div className="icon-wrapper-premium" style={{ width: '35px', height: '35px' }}>
-                                    <Eye size={18} />
+            {
+                showPreviewModal && previewFile && (
+                    <div className="modal-overlay" style={{ zIndex: 1200 }} onClick={() => setShowPreviewModal(false)}>
+                        <div className="modal glass preview-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '95vh', width: '900px', display: 'flex', flexDirection: 'column' }}>
+                            <div className="modal-header">
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <div className="icon-wrapper-premium" style={{ width: '35px', height: '35px' }}>
+                                        <Eye size={18} />
+                                    </div>
+                                    <h3 style={{ margin: 0 }}>معاينة ملف المعاينة</h3>
                                 </div>
-                                <h3 style={{ margin: 0 }}>معاينة ملف المعاينة</h3>
+                                <button className="btn-icon" onClick={() => setShowPreviewModal(false)}>&times;</button>
                             </div>
-                            <button className="btn-icon" onClick={() => setShowPreviewModal(false)}>&times;</button>
-                        </div>
-                        <div className="modal-body" style={{ flex: 1, overflow: 'auto', background: 'rgba(0,0,0,0.2)', padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-                            {previewFile.type?.includes('pdf') ? (
-                                <iframe
-                                    src={previewFile.url}
-                                    style={{ width: '100%', height: '70vh', border: 'none', borderRadius: '12px', background: 'white' }}
-                                    title="PDF Preview"
-                                />
-                            ) : (
-                                <img
-                                    src={previewFile.url}
-                                    alt="Preview"
-                                    style={{ maxWidth: '100%', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
-                                />
-                            )}
-                        </div>
-                        <div className="modal-footer" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '15px 20px' }}>
-                            <button className="btn-secondary" onClick={() => setShowPreviewModal(false)}>إغلاق</button>
-                            <a
-                                href={previewFile.url}
-                                download={`${previewFile.name || 'preview'}`}
-                                className="btn-primary"
-                                style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px' }}
-                            >
-                                <Download size={18} /> تحميل الملف
-                            </a>
+                            <div className="modal-body" style={{ flex: 1, overflow: 'auto', background: 'rgba(0,0,0,0.2)', padding: '20px', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+                                {previewFile.type?.includes('pdf') ? (
+                                    <iframe
+                                        src={previewFile.url}
+                                        style={{ width: '100%', height: '70vh', border: 'none', borderRadius: '12px', background: 'white' }}
+                                        title="PDF Preview"
+                                    />
+                                ) : (
+                                    <img
+                                        src={previewFile.url}
+                                        alt="Preview"
+                                        style={{ maxWidth: '100%', borderRadius: '12px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
+                                    />
+                                )}
+                            </div>
+                            <div className="modal-footer" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', padding: '15px 20px' }}>
+                                <button className="btn-secondary" onClick={() => setShowPreviewModal(false)}>إغلاق</button>
+                                <a
+                                    href={previewFile.url}
+                                    download={`${previewFile.name || 'preview'}`}
+                                    className="btn-primary"
+                                    style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px' }}
+                                >
+                                    <Download size={18} /> تحميل الملف
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             <style>{`
                 .preview-modal {
