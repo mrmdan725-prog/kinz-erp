@@ -808,3 +808,125 @@ select.inner-table-input,
         font-size: 16px !important;
     }
 }
+
+/* Light Theme Support for Contract Form */
+.light-theme .contract-form-container {
+    background: #fdfdfd;
+    color: #1e293b;
+}
+
+.light-theme .form-header-bar {
+    background: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.light-theme .header-main-title {
+    color: #0f172a;
+}
+
+.light-theme .action-btn-header.save {
+    background: #f1f5f9;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.light-theme .form-card {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.light-theme .form-card:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+}
+
+.light-theme .mimic-header-top {
+    border-bottom-color: #f1f5f9;
+}
+
+.light-theme .brand-logo-text {
+    color: #0f172a;
+}
+
+.light-theme .mimic-date-box input {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.light-theme .mimic-intro-text {
+    color: #475569;
+}
+
+.light-theme .mimic-party-line {
+    color: #1e293b;
+}
+
+.light-theme .field-group input,
+.light-theme .field-group select,
+.light-theme .inner-table-input,
+.light-theme .form-field input,
+.light-theme .installment-item input {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+.light-theme .field-group input:focus,
+.light-theme .field-group select:focus,
+.light-theme .inner-table-input:focus,
+.light-theme .form-field input:focus {
+    background: #ffffff !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1) !important;
+}
+
+.light-theme .premium-form-table th {
+    background: #f8fafc;
+    color: #64748b;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.light-theme .premium-form-table td {
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.light-theme .row-label {
+    background: #f8fafc;
+    color: #475569;
+}
+
+.light-theme .sum-row {
+    background: #fcfcfc;
+}
+
+.light-theme .sum-row td {
+    border-top: 2px solid #e2e8f0;
+    color: #1e293b;
+}
+
+.light-theme .grand-total-display {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.light-theme .installment-item {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+}
+
+.light-theme .form-sticky-actions {
+    background: #ffffff;
+    border-top: 1px solid #e2e8f0;
+}
+
+.light-theme .btn-form-cancel {
+    background: #f1f5f9;
+    color: #64748b;
+    border-color: #e2e8f0;
+}
+
+.light-theme .card-title {
+    color: #0f172a;
+}
